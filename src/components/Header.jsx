@@ -31,9 +31,6 @@ export function Header() {
           DM
         </a>
         <div className="header__right">
-          <a href="#contacts" className="header__nav-link header__nav-link--cta">
-            Контакты
-          </a>
           <button
             type="button"
             className="mobile-menu-btn"
