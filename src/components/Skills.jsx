@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Server, Database, Code as CodeIcon, GitBranch } from 'lucide-react';
 import { ScrollReveal } from './ScrollReveal';
 import {
@@ -68,9 +67,6 @@ const skillsData = [
 ];
 
 export function SkillCategory({ category }) {
-  const [isOpen, setIsOpen] = useState(
-    typeof window !== 'undefined' && window.innerWidth >= 768
-  );
   const Icon = category.icon;
 
   const renderSkillIcon = (icon, size = 15) => {
@@ -83,20 +79,11 @@ export function SkillCategory({ category }) {
 
   return (
     <div className="skill-category">
-      <button
-        type="button"
-        className="skill-category__header"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-expanded={isOpen}
-      >
+      <div className="skill-category__header">
         <span>{category.title}</span>
-        <Icon
-          size={18}
-          className={isOpen ? 'rotated' : ''}
-          style={{ transition: 'transform 0.3s ease' }}
-        />
-      </button>
-      <div className={`skill-category__body ${isOpen ? 'open' : ''}`}>
+        <Icon size={18} className="rotated" />
+      </div>
+      <div className="skill-category__body open">
         <ul className="skill-category__list">
           {category.skills.map((skill) => (
             <li key={skill.name} className="skill-category__item">
