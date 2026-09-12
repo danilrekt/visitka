@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 
 export default function MobileMenu({ isOpen, onClose }) {
   if (!isOpen) return null;
@@ -31,6 +32,7 @@ export function Header() {
           DM
         </a>
         <div className="header__right">
+          <ThemeToggle />
           <button
             type="button"
             className="mobile-menu-btn"
