@@ -151,12 +151,14 @@ img {
   height: 64px;
 }
 
-.header__logo {
-  font-weight: 700;
+.header__logo,
+.header__logo:hover,
+.header__logo:focus,
+.header__logo:active {
+  font-weight: 900;
   font-size: 20px;
-  color: var(--text);
+  color: #64748B;
   letter-spacing: -0.5px;
-  transition: color 0.3s ease;
 }
 
 .header__right {
