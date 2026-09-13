@@ -167,6 +167,31 @@ img {
   gap: 16px;
 }
 
+.header__switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 999px);
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.header__switch:hover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+  color: var(--accent-hover);
+}
+
+.header__switch svg {
+  width: 18px;
+  height: 18px;
+}
+
 .header__nav-link {
   font-size: 15px;
   font-weight: 500;
@@ -766,4 +791,52 @@ img {
   .hero__actions .btn {
     width: 100%;
   }
+}
+
+/* ========================
+   PAGE TRANSITION
+   ======================== */
+
+.page-exit {
+  animation: pageFadeOut 0.5s ease forwards;
+}
+
+@keyframes pageFadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+.page-enter {
+  animation: pageFadeIn 0.5s ease forwards;
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.page-overlay {
+  position: fixed;
+  inset: 0;
+  background: #0a0a0a;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.page-overlay--visible {
+  opacity: 1;
 }
