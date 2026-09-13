@@ -8,11 +8,14 @@ export default defineConfig({
   plugins: [
     react(),
     {
-      name: 'copy-index-1',
+      name: 'copy-static',
       closeBundle() {
-        if (existsSync('index_1.html')) {
-          copyFileSync('index_1.html', 'dist/index_1.html')
-        }
+        const files = ['index_1.html', 'IMG_0033.jpeg']
+        files.forEach((f) => {
+          if (existsSync(f)) {
+            copyFileSync(f, `dist/${f}`)
+          }
+        })
       },
     },
   ],
