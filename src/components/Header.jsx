@@ -42,11 +42,11 @@ export function Header() {
           DM
         </a>
         <div className="header__right">
+          <ThemeToggle />
           <a href="index_1.html" className="header__switch" title="Перейти в альтернативную версию" onClick={handleSwitch}>
             <RobotIcon />
             <span>v2</span>
           </a>
-          <ThemeToggle />
         </div>
       </div>
     </header>
