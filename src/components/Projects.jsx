@@ -93,7 +93,7 @@ export default function Projects() {
         slides={slides}
         plugins={[Captions, Counter, Zoom]}
         on={{ view: ({ index }) => setActiveIndex(index) }}
-        carousel={{ imageFit: 'contain' }}
+        carousel={{ imageFit: 'contain', padding: 0, spacing: 0 }}
         controller={{ closeOnBackdropClick: true }}
         portal={{ root: () => document.documentElement }}
       />

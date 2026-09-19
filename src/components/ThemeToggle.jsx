@@ -1,40 +1,26 @@
 import { Sun, Moon } from 'lucide-react';
-import { useEffect, useState } from 'react';
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return document.documentElement.getAttribute('data-theme') || 'light';
-    }
-    return 'light';
-  });
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  useEffect(() => {
-    const stored = localStorage.getItem('theme');
-    if (stored) {
-      setTheme(stored);
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setTheme('dark');
-    }
-  }, []);
-
-  const toggle = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
-  };
+  const theme = typeof document !== 'undefined'
+    ? document.documentElement.getAttribute('data-theme')
+    : 'dark';
 
   return (
     <button
       type="button"
       className="theme-toggle"
-      onClick={toggle}
-      aria-label={`Переключить на ${theme === 'light' ? 'тёмную' : 'светлую'} тему`}
+      aria-label={theme === 'dark' ? 'Переключить на светлую тему' : 'Переключить на тёмную тему'}
+      onClick={() => {
+        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        try {
+          localStorage.setItem('theme', next);
+        } catch {
+        }
+      }}
     >
-      {theme === 'light' ? <Sun size={15} /> : <Moon size={15} />}
+      {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
     </button>
   );
 }

@@ -103,6 +103,16 @@ img {
   --yarl__container_background_color: #0f172a;
 }
 
+@media (max-width: 768px) {
+  .yarl__slide {
+    padding: 0 !important;
+  }
+
+  .yarl__toolbar {
+    padding: 8px;
+  }
+}
+
 /* ========================
    ANIMATIONS
    ======================== */

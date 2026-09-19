@@ -10,6 +10,11 @@ function App() {
   const overlayRef = useRef(null);
 
   useEffect(() => {
+    const saved = typeof localStorage !== 'undefined' ? localStorage.getItem('theme') : null;
+    document.documentElement.setAttribute('data-theme', saved || 'dark');
+  }, []);
+
+  useEffect(() => {
     if (overlayRef.current) return;
 
     const overlay = document.createElement('div');
