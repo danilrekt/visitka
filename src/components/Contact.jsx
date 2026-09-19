@@ -19,7 +19,7 @@ export default function Contact() {
   return (
     <section id="contacts" className="page-section">
       <div className="container">
-        <p className="section__label">Контакты</p>
+        <h2 className="section__title">Контакты</h2>
         <p className="contact__desc">
           Если у вас есть проект, идея или просто хотите обсудить сотрудничество —
           я всегда открыт к диалогу.

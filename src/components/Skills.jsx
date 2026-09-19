@@ -103,7 +103,6 @@ export default function Skills() {
   return (
     <section id="skills" className="page-section">
       <div className="container">
-        <p className="section__label">Навыки</p>
         <h2 className="section__title">Мой стек технологий</h2>
         <ScrollReveal>
           <div className="skills__grid">

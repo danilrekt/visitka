@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Hero } from './components/Hero';
 import Skills from './components/Skills';
+import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import { Header } from './components/Header';
@@ -37,6 +38,8 @@ function App() {
         <Hero />
         <hr className="divider" />
         <Skills />
+        <hr className="divider" />
+        <Projects />
         <hr className="divider" />
         <Contact />
       </main>
