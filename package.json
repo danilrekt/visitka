@@ -12,7 +12,8 @@
   "dependencies": {
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "simple-icons": "^16.30.0"
+    "simple-icons": "^16.30.0",
+    "yet-another-react-lightbox": "^3.32.2"
   },
   "devDependencies": {
     "@types/react": "^19.2.18",

@@ -95,6 +95,14 @@ img {
   --illustration-blue: #3B82F6;
 }
 
+.yarl__container {
+  --yarl__container_background_color: #f8fafc;
+}
+
+[data-theme="dark"] .yarl__container {
+  --yarl__container_background_color: #0f172a;
+}
+
 /* ========================
    ANIMATIONS
    ======================== */
@@ -687,6 +695,26 @@ img {
   gap: 12px;
 }
 
+.project-card__divider {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.project-card__divider::before,
+.project-card__divider::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  background: var(--border);
+}
+
 .project-card__screen {
   width: 100%;
   aspect-ratio: 16 / 10;
@@ -696,6 +724,11 @@ img {
   border: 1px solid var(--border);
   cursor: zoom-in;
   transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.project-card__screen--mobile {
+  object-fit: contain;
+  background: var(--card-bg);
 }
 
 .project-card__screen:active {

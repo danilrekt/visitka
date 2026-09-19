@@ -22,6 +22,9 @@ function App() {
       setTimeout(() => {
         overlay.classList.remove('page-overlay--visible');
         document.body.classList.add('page-enter');
+        setTimeout(() => {
+          document.body.classList.remove('page-enter');
+        }, 500);
       }, 200);
     });
 
