@@ -64,7 +64,7 @@ export default function Projects() {
               {screenshots.map((screenshot, i) => (
                 <Fragment key={screenshot.src}>
                   {i === 0 && (
-                    <div className="project-card__divider" aria-hidden="true">
+                    <div className="project-card__divider project-card__divider--mobile" aria-hidden="true">
                       <span>Mobile</span>
                     </div>
                   )}

@@ -709,6 +709,7 @@ img {
   grid-column: 1 / -1;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   margin: 4px 0;
   color: var(--text-secondary);
@@ -723,6 +724,15 @@ img {
   height: 1px;
   flex: 1;
   background: var(--border);
+}
+
+.project-card__divider--mobile {
+  justify-content: center;
+}
+
+.project-card__divider--mobile::before,
+.project-card__divider--mobile::after {
+  display: none;
 }
 
 .project-card__screen {
