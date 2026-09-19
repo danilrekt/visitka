@@ -3,15 +3,15 @@ import { Flower2, X } from 'lucide-react';
 import { ScrollReveal } from './ScrollReveal';
 
 const screenshots = [
-  '/main.png',
-  '/card.png',
-  '/admin_crud.png',
-  '/admin_change.png',
-  '/stats.png',
-  '/contacts.png',
-  '/mobile_card.png',
-  '/pay.png',
-  '/about.png',
+  `${import.meta.env.BASE_URL}main.png`,
+  `${import.meta.env.BASE_URL}card.png`,
+  `${import.meta.env.BASE_URL}admin_crud.png`,
+  `${import.meta.env.BASE_URL}admin_change.png`,
+  `${import.meta.env.BASE_URL}stats.png`,
+  `${import.meta.env.BASE_URL}contacts.png`,
+  `${import.meta.env.BASE_URL}mobile_card.png`,
+  `${import.meta.env.BASE_URL}pay.png`,
+  `${import.meta.env.BASE_URL}about.png`,
 ];
 
 export default function Projects() {
