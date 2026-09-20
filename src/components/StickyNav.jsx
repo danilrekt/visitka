@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
 
 const sections = [
-  { id: 'home', label: 'DM' },
+  { id: 'home', label: 'D' },
   { id: 'skills', label: 'Навыки' },
   { id: 'projects', label: 'Проекты' },
   { id: 'contacts', label: 'Контакты' },
@@ -15,12 +15,15 @@ export function StickyNav() {
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef(null);
   const indicatorRef = useRef(null);
+  const isScrollingRef = useRef(false);
+  const scrollEndTimerRef = useRef(null);
 
   useEffect(() => {
     const handleLogoClick = (e) => {
       if (e.target.closest('[data-scroll-top]')) {
         e.preventDefault();
         setActiveId('home');
+        isScrollingRef.current = true;
         window.scrollTo({ top: 0, behavior: 'smooth' });
         history.pushState(null, '', ' ');
       }
@@ -36,6 +39,8 @@ export function StickyNav() {
       .filter(Boolean);
 
     const updateActive = () => {
+      if (isScrollingRef.current) return;
+
       const scrollY = window.scrollY + HEADER_OFFSET + 100;
 
       if (window.scrollY < HEADER_OFFSET) {
@@ -55,9 +60,25 @@ export function StickyNav() {
       setActiveId('home');
     };
 
+    const onScroll = () => {
+      updateActive();
+
+      if (scrollEndTimerRef.current) {
+        clearTimeout(scrollEndTimerRef.current);
+      }
+      scrollEndTimerRef.current = setTimeout(() => {
+        isScrollingRef.current = false;
+      }, 600);
+    };
+
     updateActive();
-    window.addEventListener('scroll', updateActive, { passive: true });
-    return () => window.removeEventListener('scroll', updateActive);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (scrollEndTimerRef.current) {
+        clearTimeout(scrollEndTimerRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -72,6 +93,7 @@ export function StickyNav() {
   }, [activeId]);
 
   const scrollTo = (id, updateHash = true) => {
+    isScrollingRef.current = true;
     if (id === 'home') {
       setActiveId('home');
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -84,6 +106,7 @@ export function StickyNav() {
 
     const el = document.getElementById(id);
     if (el) {
+      setActiveId(id);
       const top = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
       window.scrollTo({ top, behavior: 'smooth' });
       if (updateHash) {
@@ -96,9 +119,9 @@ export function StickyNav() {
   useEffect(() => {
     const hash = window.location.hash.slice(1);
     if (hash && sections.some(s => s.id === hash)) {
+      isScrollingRef.current = true;
       if (hash === 'home') {
         setTimeout(() => {
-          setActiveId('home');
           window.scrollTo({ top: 0, behavior: 'instant' });
         }, 0);
       } else {
@@ -110,6 +133,7 @@ export function StickyNav() {
           }, 0);
         }
       }
+      setActiveId(hash);
     }
   }, []);
 
@@ -125,7 +149,7 @@ export function StickyNav() {
               onClick={() => scrollTo(id)}
               aria-current={activeId === id ? 'location' : undefined}
             >
-              {label}
+              {id === 'home' ? <span className="sticky-nav__logo">D</span> : label}
             </button>
           ))}
           <span className="sticky-nav__indicator" ref={indicatorRef} />
@@ -155,7 +179,11 @@ export function StickyNav() {
                   scrollTo(id);
                 }}
               >
-                {id === 'home' ? 'DM (Обо мне)' : label}
+                {id === 'home' ? (
+                  <>
+                    <span className="header__mobile-logo">D</span> (Обо мне)
+                  </>
+                ) : label}
               </button>
             ))}
           </nav>

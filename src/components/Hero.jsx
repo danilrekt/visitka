@@ -11,7 +11,7 @@ const features = [
 
 export function Hero() {
   useEffect(() => {
-    document.title = 'Данила Мусин — Web Developer / Full-Stack Developer';
+    document.title = 'Данила — Web Developer / Full-Stack Developer';
   }, []);
 
   return (
@@ -26,7 +26,7 @@ export function Hero() {
               className="hero__title animate-in animate-in-scale"
               style={{ animationDelay: '0.1s' }}
             >
-              Данила Мусин
+              Данила
             </h1>
             <p className="hero__subtitle animate-in" style={{ animationDelay: '0.25s' }}>
               Web Developer / Full-Stack Developer
@@ -49,6 +49,7 @@ export function Hero() {
 
         <div className="hero__about">
           <div className="hero__about-text">
+            <h2 className="section__title">Обо мне</h2>
             <p>
               Я веб-разработчик, который создаёт современные и функциональные
               веб-приложения. Мне нравится полный цикл разработки: от идеи и
