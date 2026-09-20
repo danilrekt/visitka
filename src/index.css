@@ -567,6 +567,8 @@ img {
   font-size: 17px;
   color: var(--text-secondary);
   line-height: 1.7;
+  align-self: flex-start;
+  margin-top: -24px;
 }
 
 .hero__about-text p {
