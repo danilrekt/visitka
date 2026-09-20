@@ -39,7 +39,7 @@ export default function Contact() {
               <div key={step.text} style={{ display: 'contents' }}>
                 <div
                   className={`contact__process-step ${index === processSteps.length - 1 ? 'contact__process-step--last' : ''}`}
-                  style={{ transitionDelay: `${step.delay}ms` }}
+                  style={{ animationDelay: `${step.delay}ms` }}
                   role="listitem"
                 >
                   <span className="contact__process-text">{step.text}</span>
