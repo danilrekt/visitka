@@ -266,7 +266,6 @@ img {
 }
 
 .header__nav {
-  flex: 1;
   display: flex;
   justify-content: center;
   min-width: 0;
@@ -286,13 +285,6 @@ img {
 /* ========================
    HEADER NAV (inside header__inner)
    ======================== */
-
-.header__nav {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  min-width: 0;
-}
 
 .sticky-nav__inner {
   display: flex;
@@ -445,25 +437,6 @@ img {
 .header__mobile-link--active {
   background: var(--accent-light);
   color: var(--accent);
-}
-
-.header__mobile-link--github {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
-  color: var(--text-secondary);
-}
-
-.header__mobile-link--github:hover {
-  background: transparent;
-  color: var(--text);
-}
-
-.header__mobile-link--github svg {
-  flex-shrink: 0;
 }
 
 /* ========================

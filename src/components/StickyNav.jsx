@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
-import { Menu, X, GitBranch } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const sections = [
-  { id: 'about', label: 'Обо мне' },
+  { id: 'home', label: 'DM' },
   { id: 'skills', label: 'Навыки' },
   { id: 'projects', label: 'Проекты' },
   { id: 'contacts', label: 'Контакты' },
@@ -11,7 +11,7 @@ const sections = [
 const HEADER_OFFSET = 70;
 
 export function StickyNav() {
-  const [activeId, setActiveId] = useState('about');
+  const [activeId, setActiveId] = useState('home');
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef(null);
   const indicatorRef = useRef(null);
@@ -20,6 +20,7 @@ export function StickyNav() {
     const handleLogoClick = (e) => {
       if (e.target.closest('[data-scroll-top]')) {
         e.preventDefault();
+        setActiveId('home');
         window.scrollTo({ top: 0, behavior: 'smooth' });
         history.pushState(null, '', ' ');
       }
@@ -30,24 +31,28 @@ export function StickyNav() {
 
   useEffect(() => {
     const sectionElements = sections
+      .filter(({ id }) => id !== 'home')
       .map(({ id }) => document.getElementById(id))
       .filter(Boolean);
 
-    if (sectionElements.length === 0) return;
-
     const updateActive = () => {
       const scrollY = window.scrollY + HEADER_OFFSET + 100;
-      
+
+      if (window.scrollY < HEADER_OFFSET) {
+        setActiveId('home');
+        return;
+      }
+
       for (let i = sectionElements.length - 1; i >= 0; i--) {
         const el = sectionElements[i];
         const top = el.getBoundingClientRect().top + window.scrollY;
-        
+
         if (scrollY >= top) {
           setActiveId(el.id);
           return;
         }
       }
-      setActiveId(sections[0].id);
+      setActiveId('home');
     };
 
     updateActive();
@@ -67,6 +72,16 @@ export function StickyNav() {
   }, [activeId]);
 
   const scrollTo = (id, updateHash = true) => {
+    if (id === 'home') {
+      setActiveId('home');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (updateHash) {
+        history.pushState(null, '', '#home');
+      }
+      setIsOpen(false);
+      return;
+    }
+
     const el = document.getElementById(id);
     if (el) {
       const top = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
@@ -81,12 +96,19 @@ export function StickyNav() {
   useEffect(() => {
     const hash = window.location.hash.slice(1);
     if (hash && sections.some(s => s.id === hash)) {
-      const el = document.getElementById(hash);
-      if (el) {
+      if (hash === 'home') {
         setTimeout(() => {
-          const top = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
-          window.scrollTo({ top, behavior: 'instant' });
+          setActiveId('home');
+          window.scrollTo({ top: 0, behavior: 'instant' });
         }, 0);
+      } else {
+        const el = document.getElementById(hash);
+        if (el) {
+          setTimeout(() => {
+            const top = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
+            window.scrollTo({ top, behavior: 'instant' });
+          }, 0);
+        }
       }
     }
   }, []);
@@ -133,18 +155,9 @@ export function StickyNav() {
                   scrollTo(id);
                 }}
               >
-                {label}
+                {id === 'home' ? 'DM (Обо мне)' : label}
               </button>
             ))}
-            <a
-              href="https://github.com/danilrekt"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="header__mobile-link header__mobile-link--github"
-            >
-              <GitBranch size={18} strokeWidth={2} />
-              GitHub
-            </a>
           </nav>
         </div>
       )}
