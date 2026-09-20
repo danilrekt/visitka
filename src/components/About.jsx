@@ -48,14 +48,13 @@ export default function About() {
               </div>
             </ScrollReveal>
           </div>
-          <div className="about__cards">
+           <div className="about__cards">
             {features.map((feature, index) => (
               <ScrollReveal key={feature.title}>
                 <FeatureCard
                   icon={feature.icon}
                   title={feature.title}
                   desc={feature.desc}
-                  className={`animate-in animate-in-delay-${index + 1}`}
                 />
               </ScrollReveal>
             ))}
