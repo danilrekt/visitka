@@ -116,27 +116,6 @@ export function StickyNav() {
     }
   };
 
-  useEffect(() => {
-    const hash = window.location.hash.slice(1);
-    if (hash && sections.some(s => s.id === hash)) {
-      isScrollingRef.current = true;
-      if (hash === 'home') {
-        setTimeout(() => {
-          window.scrollTo({ top: 0, behavior: 'instant' });
-        }, 0);
-      } else {
-        const el = document.getElementById(hash);
-        if (el) {
-          setTimeout(() => {
-            const top = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
-            window.scrollTo({ top, behavior: 'instant' });
-          }, 0);
-        }
-      }
-      setActiveId(hash);
-    }
-  }, []);
-
   return (
     <>
       <nav className="header__nav" aria-label="Навигация по разделам" ref={navRef}>
