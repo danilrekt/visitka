@@ -11,7 +11,7 @@ function App() {
 
   useEffect(() => {
     const saved = typeof localStorage !== 'undefined' ? localStorage.getItem('theme') : null;
-    document.documentElement.setAttribute('data-theme', saved || 'dark');
+    document.documentElement.setAttribute('data-theme', saved || 'light');
   }, []);
 
   useEffect(() => {
