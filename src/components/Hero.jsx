@@ -19,25 +19,30 @@ export function Hero() {
       <div className="container">
         <div className="hero__inner">
           <div>
-            <p className="hero__label animate-in">Привет, меня зовут</p>
-            <h1 className="hero__title animate-in animate-in-delay-1">
+            <p className="hero__label animate-in" style={{ animationDelay: '0s' }}>
+              Привет, меня зовут
+            </p>
+            <h1
+              className="hero__title animate-in animate-in-scale"
+              style={{ animationDelay: '0.1s' }}
+            >
               Данила Мусин
             </h1>
-            <p className="hero__subtitle animate-in animate-in-delay-2">
+            <p className="hero__subtitle animate-in" style={{ animationDelay: '0.25s' }}>
               Web Developer / Full-Stack Developer
             </p>
-            <p className="hero__desc animate-in animate-in-delay-3">
+            <p className="hero__desc animate-in" style={{ animationDelay: '0.4s' }}>
               Создаю современные сайты и веб-приложения —
               от интерфейса до базы данных и деплоя.
             </p>
-            <div className="hero__actions animate-in animate-in-delay-4">
+            <div className="hero__actions animate-in" style={{ animationDelay: '0.55s' }}>
               <a href="#contacts" className="btn btn--primary btn--lg">
                 Связаться
                 <ArrowRight size={18} />
               </a>
             </div>
           </div>
-          <div className="animate-in animate-in-delay-2">
+          <div className="hero__illustration">
             <WorkspaceIllustration />
           </div>
         </div>
