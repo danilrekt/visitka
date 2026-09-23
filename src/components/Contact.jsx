@@ -27,6 +27,7 @@ export default function Contact() {
 
       <div className="wrap contact-foot">
         <span className="mono-tag">© 2026 Данил</span>
+        <a href="privacy.html" className="mono-tag contact-privacy">Политика конфиденциальности</a>
       </div>
 
       <style>{`
@@ -84,11 +85,14 @@ export default function Contact() {
         .contact-links a:hover { color: var(--acid); }
         .contact-foot {
           display: flex;
-          justify-content: flex-start;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 12px 24px;
           padding-top: 24px;
           border-top: 1px solid rgba(255,255,255,0.12);
         }
         .contact-foot .mono-tag { color: var(--grey-light); }
+        .contact-foot .contact-privacy:hover { color: var(--acid); }
         @media (max-width: 700px) {
           .contact-inner { flex-direction: column; align-items: flex-start; }
           .contact-title { line-height: 1.08; }
