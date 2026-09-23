@@ -33,8 +33,8 @@ export default function Contact() {
         .contact {
           background: var(--ink);
           color: var(--paper);
-          padding: clamp(56px, 9vw, 120px) 0 32px;
-          margin-top: clamp(40px, 6vw, 80px);
+          padding: clamp(19px, 3vw, 40px) 0 32px;
+          margin-top: clamp(14px, 2vw, 27px);
         }
         .contact-inner {
           display: flex;

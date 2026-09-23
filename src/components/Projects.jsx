@@ -22,7 +22,6 @@ export default function Projects() {
       <div className="wrap">
         <div className="projects-head">
           <h2 className="section-title">Избранные проекты</h2>
-          <span className="mono-tag">избранный кейс</span>
         </div>
 
         <div className="projects-grid">
@@ -76,7 +75,7 @@ export default function Projects() {
 
       <style>{`
         .projects {
-          padding: clamp(56px, 8vw, 100px) 0;
+          padding: clamp(19px, 2.7vw, 34px) 0;
           border-top: 1px solid var(--line-soft);
         }
         .projects-head {
@@ -136,7 +135,8 @@ export default function Projects() {
           font-size: clamp(16px, 1.6vw, 22px);
           -webkit-text-stroke: 0;
         }
-        .project-media--photo {
+        .project-media.project-media--photo {
+          aspect-ratio: 1400 / 1201;
           background-size: cover;
           background-position: center top;
         }

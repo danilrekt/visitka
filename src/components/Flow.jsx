@@ -28,7 +28,7 @@ export default function Flow() {
 
       <style>{`
         .flow {
-          padding: clamp(56px, 8vw, 100px) 0;
+          padding: clamp(19px, 2.7vw, 34px) 0;
           border-top: 1px solid var(--line-soft);
         }
         .flow-title { margin-bottom: 32px; }

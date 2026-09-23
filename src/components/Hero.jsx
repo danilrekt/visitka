@@ -85,8 +85,8 @@ export default function Hero() {
 
       <style>{`
         .hero {
-          padding-top: clamp(48px, 8vw, 96px);
-          padding-bottom: clamp(40px, 6vw, 72px);
+          padding-top: clamp(16px, 2.7vw, 32px);
+          padding-bottom: clamp(14px, 2vw, 24px);
           position: relative;
         }
         .hero-inner {

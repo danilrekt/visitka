@@ -29,7 +29,7 @@ export default function About() {
 
       <style>{`
         .about {
-          padding: clamp(64px, 10vw, 140px) 0;
+          padding: clamp(22px, 3.4vw, 47px) 0;
         }
         .about-inner {
           display: grid;
