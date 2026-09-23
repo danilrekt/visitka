@@ -5,10 +5,11 @@ const STATS = [
   { value: '', label: 'открыт к идеям', symbol: '∞' },
 ]
 
+// 2×2 grid of headline numbers, shown inside the About section
 export default function Stats() {
   return (
-    <section className="stats">
-      <div className="wrap stats-grid">
+    <div className="stats">
+      <div className="stats-grid">
         {STATS.map((s, i) => (
           <div className="stat" key={i}>
             <div className="stat-value">
@@ -21,21 +22,16 @@ export default function Stats() {
       </div>
 
       <style>{`
-        .stats {
-          border-top: 1px solid var(--line-soft);
-          border-bottom: 1px solid var(--line-soft);
-          padding: clamp(28px, 4vw, 40px) 0;
-        }
         .stats-grid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 20px;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 28px 20px;
         }
         .stat {
           border-left: 1px solid var(--line-soft);
           padding-left: 20px;
         }
-        .stat:first-child { border-left: none; padding-left: 0; }
+        .stat:nth-child(odd) { border-left: none; padding-left: 0; }
         .stat-value {
           font-family: var(--font-display);
           font-weight: 800;
@@ -44,11 +40,7 @@ export default function Stats() {
           margin-bottom: 10px;
         }
         .stat-suffix { color: var(--acid); -webkit-text-stroke: 1px var(--ink); }
-        @media (max-width: 700px) {
-          .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px 16px; }
-          .stat:nth-child(3) { border-left: none; padding-left: 0; }
-        }
       `}</style>
-    </section>
+    </div>
   )
 }

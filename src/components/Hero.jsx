@@ -1,13 +1,41 @@
+import { useLayoutEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import HeroVisual from './HeroVisual.jsx'
 
 const ease = [0.16, 1, 0.3, 1]
 
 export default function Hero() {
+  const [catActive, setCatActive] = useState(false)
+  // the hint first shows up once the cat has assembled; after that it reacts instantly
+  const [hintIntroDone, setHintIntroDone] = useState(false)
+  const [visualHeight, setVisualHeight] = useState(null)
+  const textRef = useRef(null)
+  const subRef = useRef(null)
+
+  // On desktop the cat spans from the top of the text column down to the last
+  // line of the intro paragraph, so its chin lines up with that line.
+  useLayoutEffect(() => {
+    const desktop = window.matchMedia('(min-width: 901px)')
+    const measure = () => {
+      if (!desktop.matches) return setVisualHeight(null)
+      const top = textRef.current.getBoundingClientRect().top
+      const bottom = subRef.current.getBoundingClientRect().bottom
+      setVisualHeight(Math.round(bottom - top))
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(textRef.current)
+    desktop.addEventListener('change', measure)
+    return () => {
+      ro.disconnect()
+      desktop.removeEventListener('change', measure)
+    }
+  }, [])
+
   return (
     <section className="hero" id="top">
       <div className="wrap hero-inner">
-        <div className="hero-text">
+        <div className="hero-text" ref={textRef}>
           <motion.p
             className="mono-tag hero-kicker"
             initial={{ opacity: 0, y: 8 }}
@@ -45,6 +73,7 @@ export default function Hero() {
           </h1>
 
           <motion.p
+            ref={subRef}
             className="hero-sub"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -75,11 +104,28 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <div className="hero-visual">
-          <HeroVisual />
-          <div className="hero-visual-label">
-            <span className="mono-tag">procedural / canvas</span>
-          </div>
+        <div className="hero-visual" style={visualHeight ? { height: visualHeight } : undefined}>
+          <HeroVisual onActiveChange={setCatActive} />
+          <motion.div
+            className="hero-poke"
+            aria-hidden="true"
+            initial={{ opacity: 0, y: -6 }}
+            animate={catActive ? { opacity: 0, y: 0 } : { opacity: 1, y: 0 }}
+            transition={
+              !hintIntroDone
+                ? { duration: 0.4, ease, delay: 1.2 }
+                : { duration: catActive ? 0 : 0.12 }
+            }
+            onAnimationComplete={() => setHintIntroDone(true)}
+          >
+            <span className="hero-poke-text">потрогать котика</span>
+            <svg className="hero-poke-arrow" viewBox="0 0 48 60" fill="none">
+              <g strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 4 C 40 12, 6 30, 26 52 M17 45 L 26 52 L 31 42" stroke="var(--ink)" strokeWidth="5" />
+                <path d="M14 4 C 40 12, 6 30, 26 52 M17 45 L 26 52 L 31 42" stroke="var(--acid)" strokeWidth="2.6" />
+              </g>
+            </svg>
+          </motion.div>
         </div>
       </div>
 
@@ -93,7 +139,7 @@ export default function Hero() {
           display: grid;
           grid-template-columns: 1.1fr 0.9fr;
           gap: 24px;
-          align-items: center;
+          align-items: start;
         }
         .hero-kicker {
           margin-bottom: 22px;
@@ -131,22 +177,52 @@ export default function Hero() {
           position: relative;
           height: clamp(320px, 44vw, 560px);
         }
+        /* sits in the gap between the cat's ears, arrow pointing at its head */
+        .hero-poke {
+          position: absolute;
+          top: 3%;
+          left: 50%;
+          translate: -50% 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          pointer-events: none;
+        }
+        .hero-poke-text {
+          font-family: 'Caveat', cursive;
+          font-weight: 700;
+          font-size: clamp(20px, 2vw, 28px);
+          line-height: 1;
+          white-space: nowrap;
+          transform: rotate(-4deg);
+        }
+        .hero-poke-arrow {
+          width: clamp(32px, 3.6vw, 52px);
+          margin-top: 2px;
+        }
         .hero-visual-canvas {
           width: 100%;
           height: 100%;
           display: block;
         }
-        .hero-visual-label {
-          position: absolute;
-          bottom: 6px;
-          right: 6px;
-        }
         @media (max-width: 900px) {
           .hero-inner {
             grid-template-columns: 1fr;
           }
-          .hero-visual { order: -1; height: 300px; }
-          .hero-meta { gap: 24px; }
+          .hero-visual { order: -1; height: 340px; }
+          .hero-meta {
+            display: grid;
+            gap: 10px;
+            margin-top: 28px;
+            padding-top: 18px;
+          }
+          .hero-meta-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 16px;
+          }
+          .hero-meta-item p { margin-top: 0; text-align: right; }
         }
       `}</style>
     </section>

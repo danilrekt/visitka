@@ -91,6 +91,7 @@ export default function Contact() {
         .contact-foot .mono-tag { color: var(--grey-light); }
         @media (max-width: 700px) {
           .contact-inner { flex-direction: column; align-items: flex-start; }
+          .contact-title { line-height: 1.08; }
           .contact-right { text-align: left; }
           .contact-links { justify-content: flex-start; }
         }

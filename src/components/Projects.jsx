@@ -5,7 +5,7 @@ import ProjectGallery, { FLOWER_SURGUT_GALLERY } from './ProjectGallery.jsx'
 const PROJECTS = [
   {
     tag: 'Веб-разработка',
-    stack: 'REACT / VITE / SUPABASE',
+    stack: 'REACT / VITE / SQLITE',
     title: 'Flower Surgut',
     desc: 'Каталог и заказ цветов с каталогом на 60+ позиций и собственной админ-панелью для управления товарами.',
     size: 'large',
@@ -155,6 +155,11 @@ export default function Projects() {
         }
         .project-card--live:hover .project-gallery-hint { color: var(--acid); }
 
+        .project-info {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
         .project-info-top {
           display: flex;
           justify-content: space-between;

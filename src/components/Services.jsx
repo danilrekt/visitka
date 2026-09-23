@@ -24,44 +24,39 @@ const SERVICES = [
   },
 ]
 
+// List of services, shown inside the About section
 export default function Services() {
   const [active, setActive] = useState(null)
 
   return (
-    <section className="services" id="services">
-      <div className="wrap">
-        <div className="services-head">
-          <h2 className="section-title">С чем помогаю</h2>
-          <span className="mono-tag">04 направления</span>
-        </div>
+    <div className="services" id="services">
+      <div className="services-head">
+        <h2 className="section-title">С чем помогаю</h2>
+        <span className="mono-tag">04 направления</span>
+      </div>
 
-        <div className="services-list">
-          {SERVICES.map((s, i) => (
-            <div
-              key={s.n}
-              className="service-row"
-              onMouseEnter={() => setActive(i)}
-              onMouseLeave={() => setActive(null)}
-            >
-              <span className="service-n mono-tag">{s.n}</span>
-              <h3 className="service-title">{s.title}</h3>
-              <p className="service-desc">{s.desc}</p>
-              <ArrowUpRight
-                className="service-arrow"
-                size={22}
-                strokeWidth={1.75}
-                style={{ opacity: active === i ? 1 : 0 }}
-              />
-            </div>
-          ))}
-        </div>
+      <div className="services-list">
+        {SERVICES.map((s, i) => (
+          <div
+            key={s.n}
+            className="service-row"
+            onMouseEnter={() => setActive(i)}
+            onMouseLeave={() => setActive(null)}
+          >
+            <span className="service-n mono-tag">{s.n}</span>
+            <h3 className="service-title">{s.title}</h3>
+            <p className="service-desc">{s.desc}</p>
+            <ArrowUpRight
+              className="service-arrow"
+              size={22}
+              strokeWidth={1.75}
+              style={{ opacity: active === i ? 1 : 0 }}
+            />
+          </div>
+        ))}
       </div>
 
       <style>{`
-        .services {
-          padding: clamp(19px, 2.7vw, 34px) 0;
-          border-top: 1px solid var(--line-soft);
-        }
         .services-head {
           display: flex;
           justify-content: space-between;
@@ -108,11 +103,13 @@ export default function Services() {
         }
         @media (max-width: 780px) {
           .service-row {
-            grid-template-columns: 40px 1fr;
+            grid-template-columns: 28px 1fr;
             grid-template-areas:
               "n title"
-              "desc desc";
+              ". desc";
+            column-gap: 10px;
             row-gap: 8px;
+            padding: 20px 0;
           }
           .service-n { grid-area: n; }
           .service-title { grid-area: title; }
@@ -120,6 +117,6 @@ export default function Services() {
           .service-arrow { display: none; }
         }
       `}</style>
-    </section>
+    </div>
   )
 }

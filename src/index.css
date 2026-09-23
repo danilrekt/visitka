@@ -18,6 +18,10 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 64px; /* sticky header height, so anchors don't hide under it */
+}
+@media (max-width: 780px) {
+  html { scroll-padding-top: 80px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -84,6 +88,14 @@ button {
   color: var(--ink);
   background: var(--acid);
   padding: 0 0.12em;
+}
+
+/* in the tight display headings keep the highlight as tall as the line, so it
+   doesn't cover the bottom of the line above */
+.hero-title .acid,
+.contact-title .acid,
+.about-statement .acid {
+  display: inline-block;
 }
 
 .hairline {

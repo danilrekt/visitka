@@ -29,7 +29,15 @@ export default function Header() {
     <>
       <header className="header">
         <div className="wrap header-inner">
-          <a href="#top" className="logo">
+          <a
+            href="#top"
+            className="logo"
+            onClick={(e) => {
+              e.preventDefault()
+              setOpen(false)
+              window.scrollTo({ top: 0, behavior: 'smooth' })
+            }}
+          >
             ДАНИЛ<span className="logo-deg">°</span>
           </a>
 

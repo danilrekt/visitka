@@ -42,7 +42,15 @@ export default function Stack() {
           display: flex;
           justify-content: space-between;
           align-items: baseline;
+          gap: 24px;
           margin-bottom: 32px;
+        }
+        @media (max-width: 700px) {
+          .stack-head {
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 24px;
+          }
         }
         .marquee-wrap {
           display: flex;
