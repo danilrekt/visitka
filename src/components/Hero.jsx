@@ -1,87 +1,154 @@
-import { useEffect } from 'react';
-import { ArrowRight, Code2, BarChart3, GraduationCap, Heart } from 'lucide-react';
-import WorkspaceIllustration from './WorkspaceIllustration';
+import { motion } from 'framer-motion'
+import HeroVisual from './HeroVisual.jsx'
 
-const features = [
-  { icon: Code2, title: 'Сайт под вашу задачу', desc: 'Не просто шаблон, а решение, адаптированное под ваш проект и аудиторию.' },
-  { icon: BarChart3, title: 'Полный цикл разработки', desc: 'От первых идей и структуры до готового сайта, который можно открыть по ссылке.' },
-  { icon: GraduationCap, title: 'Современный и удобный интерфейс', desc: 'Сайт должен хорошо выглядеть и одинаково удобно работать на компьютере и телефоне.' },
-  { icon: Heart, title: 'Готовый результат', desc: 'После разработки вы получаете работающий сайт, размещённый в интернете.' },
-];
+const ease = [0.16, 1, 0.3, 1]
 
-export function Hero() {
-  useEffect(() => {
-    document.title = 'Данила — Web Developer / Full-Stack Developer';
-  }, []);
-
+export default function Hero() {
   return (
-    <section id="about" className="page-section">
-      <div className="container">
-        <div className="hero__inner">
-          <div>
-            <p className="hero__label animate-in" style={{ animationDelay: '0s' }}>
-              Привет, меня зовут
-            </p>
-            <h1
-              className="hero__title animate-in animate-in-scale"
-              style={{ animationDelay: '0.1s' }}
+    <section className="hero" id="top">
+      <div className="wrap hero-inner">
+        <div className="hero-text">
+          <motion.p
+            className="mono-tag hero-kicker"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease }}
+          >
+            Frontend / Fullstack
+          </motion.p>
+
+          <h1 className="hero-title">
+            <motion.span
+              className="hl-row"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease, delay: 0.05 }}
             >
-              Данила
-            </h1>
-            <p className="hero__subtitle animate-in" style={{ animationDelay: '0.25s' }}>
-              Web Developer / Full-Stack Developer
-            </p>
-            <p className="hero__desc animate-in" style={{ animationDelay: '0.4s' }}>
-              Создаю современные сайты и веб-приложения —
-              от интерфейса до базы данных и деплоя.
-            </p>
-            <div className="hero__actions animate-in" style={{ animationDelay: '0.55s' }}>
-              <a href="#contacts" className="btn btn--primary btn--lg">
-                Связаться
-                <ArrowRight size={18} />
-              </a>
+              СОБИРАЮ
+            </motion.span>
+            <motion.span
+              className="hl-row"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease, delay: 0.15 }}
+            >
+              ИНТЕРФЕЙСЫ,
+            </motion.span>
+            <motion.span
+              className="hl-row"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease, delay: 0.25 }}
+            >
+              КОТОРЫЕ <span className="acid">РАБОТАЮТ</span>.
+            </motion.span>
+          </h1>
+
+          <motion.p
+            className="hero-sub"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
+            Данил — разработчик. React и Node от идеи до продакшена:
+            интерфейс, API, база данных, деплой.
+          </motion.p>
+
+          <motion.div
+            className="hero-meta"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
+            <div className="hero-meta-item">
+              <span className="mono-tag">Frontend</span>
+              <p>React · Vite · JS</p>
             </div>
-          </div>
-          <div className="hero__illustration">
-            <WorkspaceIllustration />
-          </div>
+            <div className="hero-meta-item">
+              <span className="mono-tag">Backend</span>
+              <p>Node · Express · REST</p>
+            </div>
+            <div className="hero-meta-item">
+              <span className="mono-tag">Данные</span>
+              <p>Supabase · SQL</p>
+            </div>
+          </motion.div>
         </div>
 
-<div className="hero__about">
-          <div className="hero__about-text">
-            <h2 className="section__title">Обо мне</h2>
-            <p>
-              Я разрабатываю сайты и веб-приложения, которые помогают
-              представить бизнес, услугу или проект в интернете.
-            </p>
-            <p>
-              Работаю над проектом целиком: от структуры и интерфейса до
-              функционала, базы данных и публикации сайта. Поэтому могу не
-              только собрать внешний вид, но и самостоятельно реализовать
-              необходимую логику внутри.
-            </p>
-            <p>
-              В работе стараюсь найти баланс между хорошим визуалом,
-              удобством для пользователя и реальной задачей бизнеса. Перед
-              разработкой разбираюсь в задаче и подбираю решение, которое
-              действительно имеет смысл для проекта.
-            </p>
-          </div>
-          <div className="about__cards">
-            {features.map((feature, index) => (
-              <div key={feature.title} className={`feature-card animate-in animate-in-delay-${index + 1}`}>
-                <div className="feature-card__icon">
-                  <feature.icon size={20} strokeWidth={1.8} />
-                </div>
-                <div>
-                  <h3 className="feature-card__title">{feature.title}</h3>
-                  <p className="feature-card__desc">{feature.desc}</p>
-                </div>
-              </div>
-            ))}
+        <div className="hero-visual">
+          <HeroVisual />
+          <div className="hero-visual-label">
+            <span className="mono-tag">procedural / canvas</span>
           </div>
         </div>
       </div>
+
+      <style>{`
+        .hero {
+          padding-top: clamp(48px, 8vw, 96px);
+          padding-bottom: clamp(40px, 6vw, 72px);
+          position: relative;
+        }
+        .hero-inner {
+          display: grid;
+          grid-template-columns: 1.1fr 0.9fr;
+          gap: 24px;
+          align-items: center;
+        }
+        .hero-kicker {
+          margin-bottom: 22px;
+        }
+        .hero-title {
+          font-family: var(--font-display);
+          font-weight: 800;
+          text-transform: uppercase;
+          line-height: 0.92;
+          letter-spacing: -0.015em;
+          font-size: clamp(40px, 6.4vw, 92px);
+        }
+        .hl-row { display: block; }
+        .hero-sub {
+          margin-top: 28px;
+          max-width: 46ch;
+          font-size: 16px;
+          line-height: 1.55;
+          color: var(--grey);
+        }
+        .hero-meta {
+          display: flex;
+          gap: 36px;
+          margin-top: 44px;
+          padding-top: 24px;
+          border-top: 1px solid var(--line-soft);
+          flex-wrap: wrap;
+        }
+        .hero-meta-item p {
+          margin-top: 6px;
+          font-size: 13px;
+          font-weight: 500;
+        }
+        .hero-visual {
+          position: relative;
+          height: clamp(320px, 44vw, 560px);
+        }
+        .hero-visual-canvas {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        .hero-visual-label {
+          position: absolute;
+          bottom: 6px;
+          right: 6px;
+        }
+        @media (max-width: 900px) {
+          .hero-inner {
+            grid-template-columns: 1fr;
+          }
+          .hero-visual { order: -1; height: 300px; }
+          .hero-meta { gap: 24px; }
+        }
+      `}</style>
     </section>
-  );
+  )
 }

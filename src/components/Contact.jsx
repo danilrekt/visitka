@@ -1,77 +1,100 @@
-import { MessageCircle, Mail, ArrowRight } from 'lucide-react';
-import { ScrollReveal } from './ScrollReveal';
-
-const processSteps = [
-  { text: 'РАССКАЖИТЕ', delay: 0 },
-  { text: 'ОБСУДИМ', delay: 100 },
-  { text: 'РЕШИМ', delay: 200 },
-  { text: 'СДЕЛАЕМ', delay: 300 },
-];
-
-const contacts = [
-  {
-    name: 'Написать в Telegram →',
-    href: 'https://t.me/danilrekt',
-    icon: MessageCircle,
-    primary: true,
-  },
-  {
-    name: 'Написать на Email →',
-    href: 'mailto:danilrekt1234@gmail.com',
-    icon: Mail,
-    primary: false,
-  },
-];
+import { ArrowUpRight } from 'lucide-react'
 
 export default function Contact() {
   return (
-    <section id="contacts" className="page-section contact">
-      <div className="container">
-        <ScrollReveal>
-          <h2 className="section__title contact__title">Контакты</h2>
-        </ScrollReveal>
-        <ScrollReveal className="contact__desc-reveal">
-          <h3 className="contact__main-heading">Есть проект или идея?</h3>
-        </ScrollReveal>
-        <ScrollReveal className="contact__process-reveal" style={{ transitionDelay: '100ms' }}>
-          <div className="contact__process" role="list" aria-label="Процесс работы">
-            {processSteps.map((step, index) => (
-              <div key={step.text} style={{ display: 'contents' }}>
-                <div
-                  className={`contact__process-step ${index === processSteps.length - 1 ? 'contact__process-step--last' : ''}`}
-                  style={{ animationDelay: `${step.delay}ms` }}
-                  role="listitem"
-                >
-                  <span className="contact__process-text">{step.text}</span>
-                </div>
-                {index < processSteps.length - 1 && (
-                  <div className="contact__process-arrow" aria-hidden="true">↓</div>
-                )}
-              </div>
-            ))}
+    <section className="contact" id="contact">
+      <div className="wrap contact-inner">
+        <div>
+          <span className="mono-tag contact-kicker">Есть задача?</span>
+          <h2 className="contact-title">
+            ДАВАЙТЕ
+            <br />
+            <span className="acid">СОБЕРЁМ</span> ЕЁ.
+          </h2>
+        </div>
+
+        <div className="contact-right">
+          <a href="mailto:danilrekt1234@gmail.com" className="contact-email">
+            danilrekt1234@gmail.com
+            <ArrowUpRight size={28} strokeWidth={1.75} />
+          </a>
+
+          <div className="contact-links">
+            <a href="https://t.me/danilrekt" target="_blank" rel="noreferrer">Telegram — @danilrekt</a>
           </div>
-        </ScrollReveal>
-        <ScrollReveal className="contact__code-reveal" style={{ transitionDelay: '400ms' }}>
-          <div className="contact__code">let&rsquo;s_work_together()</div>
-        </ScrollReveal>
-        <ScrollReveal className="contact__cards-reveal" style={{ transitionDelay: '500ms' }}>
-          <div className="contact__cta-group">
-            {contacts.map((contact, index) => (
-              <a
-                key={contact.name}
-                href={contact.href}
-                className={`contact__cta ${contact.primary ? 'contact__cta--primary' : 'contact__cta--secondary'}`}
-                style={{ transitionDelay: `${index * 100}ms` }}
-                target={contact.href.startsWith('http') ? '_blank' : undefined}
-                rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-              >
-                <span className="contact__cta-text">{contact.name}</span>
-                <ArrowRight size={18} strokeWidth={2} className="contact__cta-arrow" />
-              </a>
-            ))}
-          </div>
-        </ScrollReveal>
+        </div>
       </div>
+
+      <div className="wrap contact-foot">
+        <span className="mono-tag">© 2026 Данил</span>
+      </div>
+
+      <style>{`
+        .contact {
+          background: var(--ink);
+          color: var(--paper);
+          padding: clamp(56px, 9vw, 120px) 0 32px;
+          margin-top: clamp(40px, 6vw, 80px);
+        }
+        .contact-inner {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          gap: 40px;
+          flex-wrap: wrap;
+          padding-bottom: clamp(48px, 7vw, 90px);
+        }
+        .contact-kicker {
+          color: var(--grey-light);
+          display: block;
+          margin-bottom: 20px;
+        }
+        .contact-title {
+          font-family: var(--font-display);
+          font-weight: 800;
+          text-transform: uppercase;
+          line-height: 0.94;
+          letter-spacing: -0.01em;
+          font-size: clamp(44px, 8vw, 108px);
+        }
+        .contact-right {
+          text-align: right;
+        }
+        .contact-email {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          font-family: var(--font-display);
+          font-weight: 700;
+          font-size: clamp(18px, 2vw, 26px);
+          border-bottom: 2px solid var(--acid);
+          padding-bottom: 6px;
+        }
+        .contact-links {
+          display: flex;
+          gap: 20px;
+          justify-content: flex-end;
+          margin-top: 24px;
+        }
+        .contact-links a {
+          font-size: 13px;
+          font-weight: 500;
+          color: var(--grey-light);
+        }
+        .contact-links a:hover { color: var(--acid); }
+        .contact-foot {
+          display: flex;
+          justify-content: flex-start;
+          padding-top: 24px;
+          border-top: 1px solid rgba(255,255,255,0.12);
+        }
+        .contact-foot .mono-tag { color: var(--grey-light); }
+        @media (max-width: 700px) {
+          .contact-inner { flex-direction: column; align-items: flex-start; }
+          .contact-right { text-align: left; }
+          .contact-links { justify-content: flex-start; }
+        }
+      `}</style>
     </section>
-  );
+  )
 }

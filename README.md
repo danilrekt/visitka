@@ -1,16 +1,40 @@
-# React + Vite
+# Данил — сайт-визитка
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React + Vite. Запуск:
 
-Currently, two official plugins are available:
+```bash
+npm install
+npm run dev
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Продакшен-сборка:
 
-## React Compiler
+```bash
+npm run build
+npm run preview
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Структура
 
-## Expanding the Oxlint configuration
+- `src/App.jsx` — сборка секций
+- `src/components/Hero.jsx` + `HeroVisual.jsx` — главный экран и canvas-визуал (процедурная wireframe-скульптура, реагирует на курсор)
+- `src/components/Stats.jsx` — блок с показателями
+- `src/components/About.jsx` — editorial-секция "обо мне"
+- `src/components/Services.jsx` — список направлений с hover
+- `src/components/Stack.jsx` — marquee со стеком технологий
+- `src/components/Projects.jsx` — асимметричная сетка проектов
+- `src/components/Flow.jsx` — процесс работы (5 шагов)
+- `src/components/Contact.jsx` — финальный экран
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Что стоит доделать перед публикацией
+
+1. Заменить плейсхолдеры проектов (`src/components/Projects.jsx`) на реальные кейсы и подключить настоящие изображения вместо тёмных плашек-заглушек.
+2. Указать реальные ссылки на Telegram / GitHub / LinkedIn и почту в `src/components/Contact.jsx`.
+3. При желании — заменить `Archivo Expanded` на другой выразительный display-шрифт (условия лицензии Google Fonts позволяют коммерческое использование, но проверь начертания под кириллицу — не все display-гарнитуры одинаково хорошо рисуют русские буквы).
+4. Прогнать Lighthouse / проверить на реальных устройствах 375–430px.
+
+## Дизайн-система
+
+- Цвета: `--ink #0a0a0a`, `--paper #faf9f6`, `--acid #c8ff3e`, `--grey #6f6f6b`
+- Шрифты: Archivo Expanded (display) + Inter (текст)
+- Один акцент — кислотный лайм, используется точечно (CTA, подсветка слова, разделители)

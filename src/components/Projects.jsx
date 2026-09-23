@@ -1,220 +1,188 @@
-import { Fragment, useState, useEffect, useRef } from 'react';
-import { Flower2 } from 'lucide-react';
-import { ScrollReveal } from './ScrollReveal';
-import PhotoSwipeLightbox from 'photoswipe/lightbox';
-import PhotoSwipe from 'photoswipe';
+import { useState } from 'react'
+import { ArrowUpRight } from 'lucide-react'
+import ProjectGallery, { FLOWER_SURGUT_GALLERY } from './ProjectGallery.jsx'
 
-import 'photoswipe/style.css';
-
-const desktopScreenshots = [
+const PROJECTS = [
   {
-    src: 'main.png',
-    label: 'Главная',
-    description: 'Главная страница магазина',
+    tag: 'Веб-разработка',
+    stack: 'REACT / VITE / SUPABASE',
+    title: 'Flower Surgut',
+    desc: 'Каталог и заказ цветов с каталогом на 60+ позиций и собственной админ-панелью для управления товарами.',
+    size: 'large',
+    hasGallery: true,
+    thumbnail: 'projects/flower-surgut/main.jpg',
   },
-  {
-    src: 'card.png',
-    label: 'Каталог',
-    description: 'Каталог и карточки товаров',
-  },
-  {
-    src: 'about.png',
-    label: 'О проекте',
-    description: 'Информация о магазине',
-  },
-  {
-    src: 'contacts.png',
-    label: 'Контакты',
-    description: 'Контактная информация',
-  },
-  {
-    src: 'pay.png',
-    label: 'Оплата',
-    description: 'Оформление заказа',
-  },
-  {
-    src: 'stats.png',
-    label: 'Статистика',
-    description: 'Статистика магазина',
-  },
-  {
-    src: 'admin_crud.png',
-    label: 'Админ-панель',
-    description: 'Управление товарами',
-  },
-  {
-    src: 'admin_change.png',
-    label: 'Админ-панель',
-    description: 'Редактирование товара',
-  },
-];
-
-const mobileScreenshots = [
-  {
-    src: 'mobile_main.png',
-    label: 'Mobile',
-    description: 'Мобильная версия главной страницы',
-  },
-  {
-    src: 'mobile_card.png',
-    label: 'Mobile',
-    description: 'Мобильная версия карточки товара',
-  },
-  {
-    src: 'mobile_about.png',
-    label: 'Mobile',
-    description: 'Мобильная версия раздела о магазине',
-  },
-  {
-    src: 'mobile_admin.png',
-    label: 'Mobile',
-    description: 'Мобильная версия админ-панели',
-  },
-  {
-    src: 'mobile_contacts.png',
-    label: 'Mobile',
-    description: 'Мобильная версия контактов',
-  },
-  {
-    src: 'mobile_pay.png',
-    label: 'Mobile',
-    description: 'Мобильная версия оформления заказа',
-  },
-];
-
-const screenshots = [...mobileScreenshots, ...desktopScreenshots].map(
-  (screenshot) => ({
-    ...screenshot,
-    src: `${import.meta.env.BASE_URL}${screenshot.src}`,
-  })
-);
+]
 
 export default function Projects() {
-  const [dimensions, setDimensions] = useState({});
-  const galleryRef = useRef(null);
-  const lightboxRef = useRef(null);
-
-  useEffect(() => {
-    screenshots.forEach((screenshot) => {
-      const img = new Image();
-
-      img.onload = () => {
-        setDimensions((prev) => ({
-          ...prev,
-          [screenshot.src]: {
-            width: img.naturalWidth,
-            height: img.naturalHeight,
-          },
-        }));
-      };
-
-      img.src = screenshot.src;
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!galleryRef.current) return;
-
-     lightboxRef.current = new PhotoSwipeLightbox({
-      gallery: galleryRef.current,
-      childSelector: 'a',
-      pswpModule: PhotoSwipe,
-      showHideOpacity: true,
-    });
-
-    lightboxRef.current.on('itemData', (e) => {
-      const el = e.itemData.element;
-      if (!el) return;
-      const linkEl = el.tagName === 'A' ? el : el.querySelector('a');
-      if (linkEl && linkEl.dataset.caption) {
-        e.itemData.caption = linkEl.dataset.caption;
-      }
-    });
-
-    lightboxRef.current.init();
-
-    return () => {
-      lightboxRef.current?.destroy();
-      lightboxRef.current = null;
-    };
-  }, []);
+  const [galleryOpen, setGalleryOpen] = useState(false)
 
   return (
-    <section id="projects" className="page-section">
-      <div className="container">
-        <h2 className="section__title">Проекты</h2>
+    <section className="projects" id="work">
+      <div className="wrap">
+        <div className="projects-head">
+          <h2 className="section-title">Избранные проекты</h2>
+          <span className="mono-tag">избранный кейс</span>
+        </div>
 
-        <ScrollReveal>
-          <div className="project-card">
-            <div className="project-card__header">
-              <div className="project-card__icon">
-                <Flower2 size={20} strokeWidth={1.8} />
-              </div>
-
-              <div className="project-card__meta">
-                <h3 className="project-card__title">
-                  Flower Surgut
-                </h3>
-
-                <p className="project-card__desc">
-                  Интернет-магазин свежих цветов в Сургуте — каталог
-                  букетов, фильтрация по категориям, поиск, модальное
-                  окно заказа и админ-панель.
-                </p>
-              </div>
-            </div>
-
-            <div
-              ref={galleryRef}
-              className="project-card__screenshots"
+        <div className="projects-grid">
+          {PROJECTS.map((p) => (
+            <article
+              className={`project-card size-${p.size} ${p.hasGallery ? 'project-card--live' : ''}`}
+              key={p.title}
+              role={p.hasGallery ? 'button' : undefined}
+              tabIndex={p.hasGallery ? 0 : undefined}
+              onClick={p.hasGallery ? () => setGalleryOpen(true) : undefined}
+              onKeyDown={
+                p.hasGallery
+                  ? (e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        setGalleryOpen(true)
+                      }
+                    }
+                  : undefined
+              }
             >
-              {screenshots.map((screenshot, i) => {
-                const dim = dimensions[screenshot.src] || {};
-
-                return (
-                  <Fragment key={screenshot.src}>
-                    {i === 0 && (
-                      <div
-                        className="project-card__divider project-card__divider--mobile"
-                        aria-hidden="true"
-                      >
-                        <span>Mobile</span>
-                      </div>
-                    )}
-
-                    {i === mobileScreenshots.length && (
-                      <div
-                        className="project-card__divider"
-                        aria-hidden="true"
-                      >
-                        <span>Desktop</span>
-                      </div>
-                    )}
-
-                    <a
-                      href={screenshot.src}
-                      data-pswp-width={dim.width}
-                      data-pswp-height={dim.height}
-                      data-caption={screenshot.description}
-                    >
-                      <img
-                        src={screenshot.src}
-                        alt={`${screenshot.label}: ${screenshot.description}`}
-                        className={`project-card__screen${
-                          screenshot.src.includes('/mobile_')
-                            ? ' project-card__screen--mobile'
-                            : ''
-                        }`}
-                        loading="lazy"
-                      />
-                    </a>
-                  </Fragment>
-                );
-              })}
-            </div>
-          </div>
-        </ScrollReveal>
+              <div
+                className={`project-media ${p.thumbnail ? 'project-media--photo' : ''}`}
+                style={p.thumbnail ? { backgroundImage: `url(${p.thumbnail})` } : undefined}
+                aria-hidden="true"
+              >
+                <span className="project-media-label">{p.title}</span>
+              </div>
+              <div className="project-info">
+                <div className="project-info-top">
+                  <h3>{p.title}</h3>
+                  <ArrowUpRight size={20} strokeWidth={1.75} />
+                </div>
+                <p className="project-desc">{p.desc}</p>
+                <div className="project-meta">
+                  <span className="mono-tag">{p.tag}</span>
+                  <span className="mono-tag">{p.stack}</span>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
+
+      <ProjectGallery
+        title="Flower Surgut"
+        images={FLOWER_SURGUT_GALLERY}
+        isOpen={galleryOpen}
+        onClose={() => setGalleryOpen(false)}
+      />
+
+      <style>{`
+        .projects {
+          padding: clamp(56px, 8vw, 100px) 0;
+          border-top: 1px solid var(--line-soft);
+        }
+        .projects-head {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          margin-bottom: 32px;
+        }
+        .projects-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+        }
+        .projects-grid:has(.project-card:only-child) {
+          grid-template-columns: 1fr;
+          max-width: 640px;
+        }
+        .project-card {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+        .size-large { grid-column: span 2; grid-row: span 2; }
+        .size-wide { grid-column: span 3; }
+        .size-small { grid-column: span 1; }
+
+        .project-media {
+          aspect-ratio: 4 / 3;
+          background: var(--ink);
+          position: relative;
+          overflow: hidden;
+          display: flex;
+          align-items: flex-end;
+          padding: 20px;
+        }
+        .size-large .project-media { aspect-ratio: 1 / 1; }
+        .size-wide .project-media { aspect-ratio: 21 / 9; }
+
+        .project-media::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background:
+            radial-gradient(circle at 30% 20%, color-mix(in srgb, var(--acid) 35%, transparent), transparent 55%),
+            repeating-linear-gradient(115deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 26px);
+          transition: transform 0.5s ease;
+        }
+        .project-card:hover .project-media::before {
+          transform: scale(1.06);
+        }
+        .project-media-label {
+          position: relative;
+          font-family: var(--font-display);
+          font-weight: 800;
+          text-transform: uppercase;
+          color: var(--paper);
+          font-size: clamp(16px, 1.6vw, 22px);
+          -webkit-text-stroke: 0;
+        }
+        .project-media--photo {
+          background-size: cover;
+          background-position: center top;
+        }
+        .project-media--photo::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(180deg, rgba(10,10,10,0) 45%, rgba(10,10,10,.82) 100%);
+        }
+        .project-card--live { cursor: pointer; }
+        .project-gallery-hint {
+          color: var(--ink);
+          display: inline-block;
+          margin-top: 4px;
+          transition: color 0.2s ease;
+        }
+        .project-card--live:hover .project-gallery-hint { color: var(--acid); }
+
+        .project-info-top {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .project-info-top h3 {
+          font-family: var(--font-display);
+          font-weight: 800;
+          text-transform: uppercase;
+          font-size: clamp(18px, 1.8vw, 24px);
+        }
+        .project-desc {
+          font-size: 14px;
+          color: var(--grey);
+          line-height: 1.55;
+          max-width: 50ch;
+        }
+        .project-meta {
+          display: flex;
+          gap: 16px;
+          flex-wrap: wrap;
+        }
+
+        @media (max-width: 860px) {
+          .projects-grid { grid-template-columns: 1fr; }
+          .size-large, .size-wide, .size-small { grid-column: span 1; grid-row: auto; }
+        }
+      `}</style>
     </section>
-  );
+  )
 }
