@@ -1,5 +1,5 @@
 const ROW_1 = ['JAVASCRIPT', 'REACT', 'VITE', 'HTML', 'CSS']
-const ROW_2 = ['NODE.JS', 'EXPRESS', 'REST API', 'SUPABASE', 'SQL']
+const ROW_2 = ['NODE.JS', 'EXPRESS', 'REST API', 'SQL', 'SQLITE']
 const ROW_3 = ['GIT', 'GITHUB', 'DOCKER', 'VS CODE']
 
 function MarqueeRow({ items, reverse, accent }) {

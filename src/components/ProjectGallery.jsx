@@ -24,6 +24,14 @@ export const FLOWER_SURGUT_GALLERY = [
   { label: 'Мобильная версия — админка', src: 'projects/flower-surgut/mobile_admin.jpg' },
 ]
 
+export const CLINIC_GALLERY = [
+  { label: 'Кадр 1 — женская пластика', src: 'projects/clinic/desktop_1.jpg' },
+  { label: 'Кадр 2 — камера между статуями', src: 'projects/clinic/desktop_2.jpg' },
+  { label: 'Кадр 3 — мужская пластика', src: 'projects/clinic/desktop_3.jpg' },
+  { label: 'Мобильная версия — первый кадр', src: 'projects/clinic/mobile_1.jpg' },
+  { label: 'Мобильная версия — мужская пластика', src: 'projects/clinic/mobile_2.jpg' },
+]
+
 export default function ProjectGallery({ title, images, isOpen, onClose }) {
   const [index, setIndex] = useState(0)
   const [zoom, setZoom] = useState(NO_ZOOM)

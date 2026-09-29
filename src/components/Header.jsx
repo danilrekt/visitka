@@ -10,6 +10,13 @@ const LINKS = [
 export default function Header() {
   const [open, setOpen] = useState(false)
 
+  // Прокрутка к разделу без #якоря в адресе — иначе после перезагрузки браузер прыгает к этому разделу
+  const goTo = (e, href) => {
+    e.preventDefault()
+    setOpen(false)
+    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
     return () => {
@@ -43,7 +50,7 @@ export default function Header() {
 
           <nav className="nav" aria-label="Основная навигация">
             {LINKS.map((l) => (
-              <a key={l.href} href={l.href} className="nav-link">
+              <a key={l.href} href={l.href} className="nav-link" onClick={(e) => goTo(e, l.href)}>
                 {l.label}
               </a>
             ))}
@@ -66,7 +73,7 @@ export default function Header() {
 
       <nav className={`mobile-menu ${open ? 'is-open' : ''}`} aria-label="Мобильная навигация">
         {LINKS.map((l) => (
-          <a key={l.href} href={l.href} onClick={() => setOpen(false)}>
+          <a key={l.href} href={l.href} onClick={(e) => goTo(e, l.href)}>
             {l.label}
           </a>
         ))}

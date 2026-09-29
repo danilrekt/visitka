@@ -1,0 +1,218 @@
+/* ==========================================================
+   postpunk v2 — подключается после postpunk.css.
+   Первый экран: «пролёт камеры» по мраморным статуям вместо фото/видео,
+   выбор направления и запись на консультацию видны на всех кадрах.
+   ========================================================== */
+
+/* ---------- Шапка: телефон и запись ---------- */
+.hdr-act { margin-left: auto; display: flex; align-items: center; gap: 28px; }
+.hdr-act__tel { font-size: 14px; letter-spacing: .04em; opacity: .9; white-space: nowrap; }
+.hdr-act__cta {
+  padding: 12px 22px; font-size: 12px; text-transform: uppercase; letter-spacing: .16em; white-space: nowrap;
+  box-shadow: inset 0 0 0 1px currentColor; transition: background .4s var(--ease), color .4s var(--ease);
+}
+.hdr-act__cta:hover { background: var(--ink); color: var(--bg); box-shadow: inset 0 0 0 1px var(--ink); }
+
+/* ---------- Появление шапки и полосок: только прозрачность, без сдвига ----------
+   Было (style.css): выезд на 16 px с сильным замедлением в конце. На хвосте шапка двигалась
+   на доли пикселя — тонкий текст меню и рамка «Записаться» (1 px) прыгали между рядами пикселей,
+   а в момент окончания браузер перерисовывал текст с другим сглаживанием. Это и было мерцание.
+   will-change держит шапку на отдельном слое всё время — сглаживание текста не меняется */
+@keyframes fadeOnly { from { opacity: 0; } }
+.header { animation-name: fadeOnly; will-change: opacity; }
+.slider__ui { animation-name: fadeOnly; }
+
+/* ---------- Камера ----------
+   Снимок лежит в «риге» шириной с экран. Кадр задают три числа:
+   --cx, --cy — точка на снимке (доли ширины и высоты), которая встаёт в центр экрана,
+   --z — во сколько раз приблизить. Смена кадра = CSS-переход transform, то есть проезд камеры.
+   150.71 — высота снимка в процентах ширины (5124 / 3400); при замене снимка пересчитать. */
+.cam {
+  position: absolute; inset: 0; overflow: hidden; container-type: size;
+  background: var(--bg); opacity: 0; transition: opacity 1.1s var(--ease);
+}
+.cam.is-ready { opacity: 1; }
+/* Возврат с последнего кадра на первый — через затемнение (js/camera.js, DIM = .7 с),
+   а не проездом назад через весь снимок */
+.cam.is-ready.is-dim { opacity: 0; transition: opacity .7s cubic-bezier(.45, 0, .55, 1); }
+.cam.no-move .cam__rig { transition: none; }
+/* Маршрут: она → их взгляды друг на друга → он.
+   Кадры заданы на риге: так их можно переопределить через @container под узкий экран */
+/* Зум ограничен: при --z больше ~1.4 проступает мягкость снимка (исходник — генерация 1300 px + апскейл).
+   Допустимые --cx при зуме z: от 0.5/z до 1 − 0.5/z, иначе у края кадра будет пустота */
+.cam[data-shot="0"] .cam__rig { --cx: .63; --cy: .30; --z: 1.35; }  /* она: лицо, плечо, грудь */
+.cam[data-shot="1"] .cam__rig { --cx: .50; --cy: .20; --z: 1.35; }  /* между ними: он смотрит на неё */
+.cam[data-shot="2"] .cam__rig { --cx: .37; --cy: .24; --z: 1.35; }  /* он: профиль, шея, плечо */
+/* Вертикальный кадр (мобилка): у верхнего края снимка не хватает запаса по высоте —
+   камера держится чуть ниже, чтобы не показать пустоту над статуями */
+@container (aspect-ratio < 1) {
+  .cam[data-shot="0"] .cam__rig { --cx: .63; --cy: .30; --z: 1.6; }
+  .cam[data-shot="1"] .cam__rig { --cx: .49; --cy: .26; --z: 1.6; }
+  .cam[data-shot="2"] .cam__rig { --cx: .34; --cy: .27; --z: 1.6; }
+}
+
+.cam__rig {
+  --cx: .63; --cy: .30; --z: 1.35; /* = кадр 0, на случай если data-shot пропадёт */
+  position: absolute; left: 0; top: 0; width: 100cqw; transform-origin: 0 0; will-change: transform;
+  transform:
+    translate(calc(50cqw - var(--cx) * var(--z) * 100cqw), calc(50cqh - var(--cy) * var(--z) * 150.71cqw))
+    scale(var(--z));
+  transition: transform 3.2s cubic-bezier(.65, 0, .25, 1);
+}
+/* Чёрно-белый, контраст и приглушённые блики — уже в файле, без CSS-фильтра.
+   Между проездами кадр стоит неподвижно: постоянное медленное «дыхание» (масштаб) и зерно поверх
+   давали рябь на мелких складках занавеса — особенно заметно за шапкой и кнопкой «Записаться» */
+.cam__img { display: block; width: 100%; height: auto; }
+
+/* Затемнение: сверху — под шапку (складки занавеса за меню), слева — под подпись */
+.slider__shade {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, .6) 0%, rgba(0, 0, 0, 0) 26%),
+    linear-gradient(0deg, rgba(0, 0, 0, .72) 0%, rgba(0, 0, 0, 0) 46%),
+    linear-gradient(90deg, rgba(0, 0, 0, .66) 0%, rgba(0, 0, 0, .36) 34%, rgba(0, 0, 0, 0) 56%);
+}
+
+/* ---------- Подписи ----------
+   Камера проезжает и по светлому мрамору — мягкая тень держит текст читаемым на любом кадре */
+@media (min-width: 641px) {
+  /* Не шире, чем место слева от плашки направлений */
+  .slider__caps { width: min(760px, 54vw, calc(100% - var(--gutter) * 3 - var(--dirs-w))); }
+  .cap__title, .cap__lead { text-shadow: 0 2px 28px rgba(0, 0, 0, .55), 0 1px 3px rgba(0, 0, 0, .35); }
+  /* Подпись появляется через ~1.2 с после смены кадра (main.js ставит класс на 0.63 с + эта задержка),
+     одновременно со сменой подсветки направления (LIT_DELAY в js/camera.js) — одно событие */
+  .cap.is-active { transition-delay: .57s; }
+  /* Подпись всплывает со сдвигом — держим её на отдельном слое, чтобы в конце всплытия
+     текст не перерисовывался с другим сглаживанием (тот же «щелчок», что был у шапки) */
+  .cap { will-change: opacity, transform; }
+}
+
+/* ---------- Выбор направления ----------
+   У каждой строки своя тёмная матовая подложка (общей плашки нет): белый текст не сливается
+   с мрамором, как бы ни ехала камера. Состояния — в блоке «Подсветка направлений» ниже */
+.slider { --dirs-w: min(440px, 32vw); } /* ширина блока — от неё считается и ширина подписи */
+.hero-dirs {
+  position: absolute; right: var(--gutter); bottom: clamp(118px, 15vh, 160px); z-index: 4;
+  width: var(--dirs-w); display: flex; flex-direction: column;
+}
+.hero-dir {
+  position: relative; isolation: isolate;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: center;
+  padding: 20px 24px; color: var(--ink); transition: color .45s var(--ease);
+  background: rgba(11, 11, 10, .72); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+  box-shadow: inset 0 0 0 1px rgba(235, 232, 225, .14);
+}
+.hero-dir + .hero-dir { margin-top: -1px; } /* рамки соседних строк сливаются в одну линию */
+/* Появление — «шторка» сверху вниз, строки по очереди. Подложка всё время плотная
+   (через прозрачность она просвечивала мрамором и выглядела грязно).
+   Коротко и в один шаг: шторка открывается сразу быстро и тормозит к концу (без «висящей»
+   линии на старте), текст — вместе с ней. Всё на месте к ~1.45 с после загрузки.
+   fill-mode backwards: после появления анимация не мешает наведению */
+@keyframes dirReveal { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes dirText { from { opacity: 0; } }
+.hero-dirs .hero-dir { animation: dirReveal .7s var(--ease-out) .6s backwards; }
+.hero-dirs .hero-dir > * { animation: dirText .6s var(--ease-out) .65s backwards; }
+.hero-dirs .hero-dir + .hero-dir { animation-delay: .75s; }
+.hero-dirs .hero-dir + .hero-dir > * { animation-delay: .8s; }
+.hero-dir::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; background: var(--ink);
+  transform: scaleX(0); transform-origin: right; transition: transform .55s var(--ease-out);
+}
+.hero-dir__body { display: flex; flex-direction: column; gap: 2px; }
+.hero-dir__name { font-family: var(--serif); font-weight: 500; font-size: clamp(24px, 2.1vw, 34px); line-height: 1.1; }
+.hero-dir__sub { font-size: 14px; opacity: .8; }
+.hero-dir i { font-style: normal; font-size: 20px; transition: transform .5s var(--ease); }
+.hero-dir:focus-visible { outline-offset: -2px; border-radius: 0; }
+
+/* ---------- Подсветка направлений (только там, где есть плашка) ----------
+   Светлым становится направление того, кто сейчас в кадре: она (кадр 0) → женское,
+   он (кадр 2) → мужское, общий кадр (1) — оба тёмные. data-lit на .slider ставит js/camera.js.
+   Наведение и фокус переворачивают строку: тёмная светлеет, подсвеченная темнеет.
+   Заливка — «шторка»: въезжает слева, уходит вправо (transform-origin меняется вместе с состоянием) */
+@media (min-width: 641px) {
+  /* залито: тёмная строка под курсором/фокусом ИЛИ подсвеченная по кадру */
+  .hero-dir:focus-visible,
+  .slider[data-lit="0"] .hero-dir--f,
+  .slider[data-lit="2"] .hero-dir--m { color: var(--bg); }
+  .hero-dir:focus-visible::before,
+  .slider[data-lit="0"] .hero-dir--f::before,
+  .slider[data-lit="2"] .hero-dir--m::before { transform: scaleX(1); transform-origin: left; }
+  /* подсвеченная строка под фокусом — снова тёмная */
+  .slider[data-lit="0"] .hero-dir--f:focus-visible,
+  .slider[data-lit="2"] .hero-dir--m:focus-visible { color: var(--ink); }
+  .slider[data-lit="0"] .hero-dir--f:focus-visible::before,
+  .slider[data-lit="2"] .hero-dir--m:focus-visible::before { transform: scaleX(0); transform-origin: right; }
+}
+/* Смена подсветки вслед за камерой — медленнее и мягче, чем отклик на мышь.
+   Класс is-relighting camera.js держит на .slider, пока идёт смена */
+.slider.is-relighting .hero-dir { transition: color 1.2s cubic-bezier(.65, 0, .35, 1); }
+.slider.is-relighting .hero-dir::before { transition: transform 1.2s cubic-bezier(.65, 0, .35, 1); }
+
+@media (min-width: 641px) and (hover: hover) {
+  .hero-dir:hover { color: var(--bg); }
+  .hero-dir:hover::before { transform: scaleX(1); transform-origin: left; }
+  .hero-dir:hover i { transform: translateX(4px); }
+  .slider[data-lit="0"] .hero-dir--f:hover,
+  .slider[data-lit="2"] .hero-dir--m:hover { color: var(--ink); }
+  .slider[data-lit="0"] .hero-dir--f:hover::before,
+  .slider[data-lit="2"] .hero-dir--m:hover::before { transform: scaleX(0); transform-origin: right; }
+}
+
+
+/* ---------- Без стрелок ----------
+   Первый экран — не карусель, а проезд камеры: стрелки делали его похожим на баннер с акциями.
+   Кадры переключаются полосками (кликабельны), свайпом и клавишами ← →. Вернуть — удалить правило */
+.arrows { display: none; }
+
+/* ---------- Блок «Направления»: без номеров 01 / 03 ----------
+   Номер раньше стоял сверху и через space-between прижимал текст к низу фото — держим текст внизу сами */
+.spread__text { justify-content: flex-end; }
+
+/* ---------- Типографика по мотивам Warsaw Aesthetic (html[data-font="warsaw"]) ----------
+   В одной фразе два шрифта: основная часть — тонкий гротеск Inter, акцент (<em>) — курсив Spectral.
+   У Warsaw акцент — Cormorant Infant Italic, но его кириллический курсив слишком каллиграфичный
+   («без огласки» не читалось); Spectral спокойнее. Весь остальной текст — Inter.
+   На тёмном мраморе Inter тоньше 300 теряется, поэтому не Thin (100), как у них на белом, а Light (300).
+   Прежняя пара (Cormorant Garamond + IBM Plex Sans) — по ?font=old */
+:root[data-font="warsaw"] { --sans: "Inter", system-ui, -apple-system, sans-serif; }
+:root[data-font="warsaw"] .cap__title {
+  font-family: "Inter", system-ui, sans-serif; font-weight: 300; letter-spacing: -.04em;
+}
+:root[data-font="warsaw"] .cap__title em {
+  font-family: "Spectral", serif; font-style: italic; font-weight: 300;
+  font-size: 1em; letter-spacing: -.01em; /* высота строчных у Spectral почти как у Inter — без подгонки */
+}
+:root[data-font="warsaw"] .cap__lead { font-weight: 300; }
+:root[data-font="warsaw"] .hero-dir__name {
+  font-family: "Inter", system-ui, sans-serif; font-weight: 300; letter-spacing: -.025em;
+}
+@media (min-width: 641px) {
+  :root[data-font="warsaw"] .cap__title { font-size: clamp(40px, 4.9vw, 84px); line-height: 1.04; }
+  :root[data-font="warsaw"] .hero-dir__name { font-size: clamp(21px, 1.75vw, 28px); }
+}
+@media (max-width: 640px) {
+  :root[data-font="warsaw"] .cap__title { font-size: clamp(30px, 8.6vw, 38px); line-height: 1.08; }
+  :root[data-font="warsaw"] .hero-dir__name { font-size: 21px; }
+}
+
+/* ---------- Демо в портфолио: только первый экран, ссылки никуда не ведут ---------- */
+.nav a, .mobile-menu a, .hdr-act a { cursor: default; }
+
+/* ---------- Адаптив ---------- */
+@media (max-width: 1360px) { .hdr-act__tel { display: none; } }
+@media (max-width: 1000px) {
+  .hdr-act { display: none; }
+  .slider { --dirs-w: min(360px, 40vw); }
+}
+@media (max-width: 640px) {
+  .hero-dirs { position: static; width: auto; padding: 18px var(--gutter) 8px; }
+  /* на телефоне — простой список на фоне страницы: без подложек, рамок и анимации появления */
+  .hero-dir {
+    padding: 16px 0; margin-top: 0; border-top: 1px solid var(--line);
+    background: none; -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none;
+  }
+  .hero-dirs .hero-dir, .hero-dirs .hero-dir > * { animation: none; }
+  .hero-dir:last-child { border-bottom: 1px solid var(--line); }
+  .hero-dir::before { display: none; } /* на телефоне без плашки и подсветки — простой список */
+  .hero-dir__name { font-size: 24px; }
+  .hero-dir__sub { color: var(--ink-soft); opacity: 1; } /* без двойного приглушения цвет + прозрачность */
+}

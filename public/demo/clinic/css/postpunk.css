@@ -1,0 +1,349 @@
+/* ==========================================================
+   Тема «Ленинградская классика» — подключается после style.css.
+   Чёрное и бумажно-белое, ч/б фото: дворцы, Эрмитаж, скульптура.
+   Cormorant Garamond — заголовки и цифры (антиква с курсивом, как в музейных изданиях),
+   IBM Plex Sans — текст. Шапка и слайдер — из style.css, здесь только их оформление.
+   Всё ниже слайдера — свои блоки pp-*, общий style.css их не касается.
+   ========================================================== */
+:root {
+  --bg: #0b0b0a;
+  --surface: #161615;
+  --surface-2: #1f1f1d;
+  --ink: #ebe8e1;
+  --ink-soft: #a6a39c;
+  --muted: #77756f;
+  --accent: #ebe8e1;
+  --line: rgba(235, 232, 225, .16);
+  --shade: 0, 0, 0;
+  --paper: #ebe8e1;
+
+  --sans: "IBM Plex Sans", system-ui, sans-serif;
+  --serif: "Cormorant Garamond", "Times New Roman", serif;
+  --photo: grayscale(1) contrast(1.2) brightness(.9);
+
+  --wrap: 1320px;
+  --sec: clamp(96px, 12vw, 180px);
+}
+
+body { background: var(--bg); font-size: 16px; line-height: 1.6; }
+::selection { background: var(--ink); color: var(--bg); }
+
+/* ---------- Никаких скруглений ---------- */
+.map, .story__card, .story__cta, .map__link, .arrows button, .burger, .map .leaflet-control-zoom { border-radius: 0; }
+.slider__stage { border-radius: 0 !important; clip-path: none !important; }
+
+/* ---------- Фото и видео — ч/б ---------- */
+.slide__media, .story__card img { filter: grayscale(1) contrast(1.3) brightness(.88); }
+
+/* ---------- Шапка и меню ---------- */
+.header::before { box-shadow: 0 1px 0 var(--line); }
+.nav a { font-size: 12px; text-transform: uppercase; letter-spacing: .16em; }
+.logo__svg { filter: none; }
+.mobile-menu { background: rgba(11, 11, 10, .97); }
+.mobile-menu nav a { font-family: var(--serif); font-weight: 500; font-size: clamp(28px, 8vw, 36px); }
+
+/* ==========================================================
+   Слайдер: подписи антиквой, ключевые слова — курсивом
+   ========================================================== */
+.slider__shade {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, 0) 24%),
+    linear-gradient(0deg, rgba(0, 0, 0, .72) 0%, rgba(0, 0, 0, 0) 46%),
+    linear-gradient(90deg, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, 0) 52%);
+}
+@media (min-width: 641px) { .slider__caps { width: min(860px, 62vw); } }
+
+.cap__title, .story__title { font-family: var(--serif); font-weight: 500; letter-spacing: -.01em; color: var(--ink); }
+.cap__title { font-size: clamp(46px, 5.6vw, 96px); line-height: .98; }
+.story__title { font-size: clamp(48px, 6vw, 104px); line-height: .96; }
+.cap__title em, .story__title em { font: inherit; font-style: italic; color: var(--ink); letter-spacing: inherit; }
+.cap__lead { max-width: 44ch; margin-top: 26px; font-size: 17px; line-height: 1.55; color: rgba(235, 232, 225, .84); }
+.story__lead { color: var(--ink-soft); }
+.bar i { height: 2px; }
+.arrows button:hover { color: var(--bg); }
+
+.story__cta, .map__link { background: var(--ink); color: var(--bg); box-shadow: none; font-size: 15px; font-weight: 500; }
+.story__cta { padding: 18px 28px; }
+.story__cta:hover, .map__link:hover, .contacts .map__link:hover { background: #fff; color: var(--bg); }
+
+/* ==========================================================
+   Общие элементы
+   ========================================================== */
+.pp-wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
+.pp-paper { background: var(--paper); color: var(--bg); --line: rgba(11, 11, 10, .16); --ink-soft: #4b4945; --muted: #6b6964; }
+.pp-paper ::selection { background: var(--bg); color: var(--paper); }
+
+.pp-h {
+  margin: 0; font-family: var(--serif); font-weight: 500;
+  font-size: clamp(56px, 7.6vw, 124px); line-height: .92; letter-spacing: -.015em;
+}
+.pp-statement {
+  margin: 0; font-family: var(--serif); font-weight: 500;
+  font-size: clamp(40px, 4.8vw, 80px); line-height: 1.02; letter-spacing: -.012em;
+}
+.pp-statement em, .pp-split em, .pp-pause__line em { font-style: italic; }
+.pp-text { margin: 0; max-width: 40ch; font-size: 17px; line-height: 1.6; color: var(--ink-soft); }
+
+.pp-head {
+  display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end;
+  gap: 24px clamp(32px, 5vw, 80px); margin-bottom: clamp(56px, 7vw, 112px);
+}
+
+.pp-link {
+  position: relative; display: inline-flex; align-items: baseline; gap: .6em; padding-bottom: 5px;
+  font-size: 15px; font-weight: 500;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+}
+.pp-link::after { content: "→"; transition: transform .5s var(--ease); }
+.pp-link::before { content: ""; position: absolute; inset: -12px -6px; }
+@media (hover: hover) { .pp-link:hover::after { transform: translateX(4px); } }
+
+.pp-btn {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 56px; padding: 0 28px;
+  border: 1px solid currentColor; font-size: 15px; font-weight: 500;
+  transition: background-color .45s var(--ease), color .45s var(--ease);
+}
+.pp-paper .pp-btn { background: var(--bg); color: var(--paper); border-color: var(--bg); }
+.pp-paper .pp-btn:hover { background: transparent; color: var(--bg); }
+
+/* Фото и репродукции: ч/б, без рамок и теней */
+.pp-photo { margin: 0; overflow: hidden; background: var(--surface); }
+.pp-photo img { display: block; width: 100%; height: 100%; object-fit: cover; filter: var(--photo); }
+/* Музейная этикетка под репродукцией */
+.pp-photo figcaption { padding-top: 12px; font-size: 13px; line-height: 1.45; color: var(--muted); background: var(--bg); }
+
+/* ==========================================================
+   О клинике: антиква слева, парадная лестница справа до края экрана.
+   Текст одним блоком «висит» от верхнего края фото: фраза начинается ровно
+   на линии снимка, под ней — абзац и ссылка
+   ========================================================== */
+.pp-about {
+  display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: start;
+  gap: 48px clamp(40px, 6vw, 110px); padding-top: var(--sec);
+}
+.pp-about__text { display: flex; flex-direction: column; align-items: flex-start; gap: 36px; }
+.pp-about .pp-statement { margin-top: -.14em; /* верх заглавных — по верхнему краю фото */ }
+.pp-about__text .pp-text { margin: 12px 0 0; }
+/* Фото уходит до правого края окна, даже когда контент ограничен по ширине */
+.pp-about__photo { aspect-ratio: 3 / 4; margin-right: calc(-1 * max(var(--gutter), (100vw - var(--wrap)) / 2 + var(--gutter))); }
+
+/* ==========================================================
+   Цифры — надпись на фасаде Зимнего дворца
+   ========================================================== */
+.pp-frieze { position: relative; isolation: isolate; margin-top: var(--sec); color: var(--ink); }
+.pp-frieze__img {
+  display: block; width: 100%; height: clamp(340px, 46vw, 720px); object-fit: cover; object-position: 50% 45%;
+  filter: var(--photo) brightness(.62);
+}
+/* Затемнение снизу — только под цифрами, чтобы они читались на камне */
+.pp-frieze::after {
+  content: ""; position: absolute; inset: 40% 0 0; z-index: 0; pointer-events: none;
+  background: linear-gradient(0deg, rgba(11, 11, 10, .92), rgba(11, 11, 10, 0));
+}
+.pp-frieze__nums {
+  position: absolute; left: 0; right: 0; bottom: clamp(28px, 4vw, 64px); z-index: 1; margin-block: 0;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px;
+}
+.pp-frieze__nums > div { padding-top: 20px; border-top: 1px solid rgba(235, 232, 225, .45); }
+.pp-frieze__nums dt {
+  font-family: var(--serif); font-weight: 500; font-variant-numeric: lining-nums;
+  font-size: clamp(56px, 6.4vw, 108px); line-height: .9; letter-spacing: -.01em;
+}
+.pp-frieze__nums dt small { font-size: .5em; margin-left: .04em; }
+.pp-frieze__nums dd { margin: 12px 0 0; max-width: 18ch; font-size: 15px; line-height: 1.45; color: rgba(235, 232, 225, .8); }
+
+/* ==========================================================
+   Направления: развороты «репродукция + текст», через один зеркально.
+   Текст той же высоты, что и фото: номер под тонкой линией на верхнем крае снимка,
+   название, текст и ссылка — на нижнем. Подпись к репродукции — под кадром, вне сетки
+   ========================================================== */
+.pp-dirs { padding-top: var(--sec); }
+.spread {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: stretch;
+  gap: 40px clamp(40px, 6vw, 110px);
+}
+.spread + .spread { margin-top: clamp(120px, 12vw, 200px); }
+.spread--flip { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); }
+.spread--flip .spread__art { order: 2; }
+
+.spread__art { position: relative; margin: 0; }
+.spread__img img { aspect-ratio: 4 / 5; height: auto; }
+.spread--flip .spread__img img { aspect-ratio: 1 / 1; }
+.spread__art figcaption {
+  position: absolute; top: 100%; left: 0; right: 0; padding-top: 12px;
+  font-size: 13px; line-height: 1.45; color: var(--muted);
+}
+
+.spread__text {
+  display: flex; flex-direction: column; justify-content: space-between; gap: 40px;
+  padding-top: 16px; border-top: 1px solid var(--line);
+}
+.spread__index {
+  margin: 0; font-size: 12px; letter-spacing: .16em; color: var(--muted);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.spread__index span { color: var(--ink); }
+.spread__name {
+  margin: 0 0 24px; font-family: var(--serif); font-weight: 500;
+  font-size: clamp(44px, 5.4vw, 92px); line-height: .96; letter-spacing: -.012em;
+}
+.spread__body .pp-text { margin-bottom: 32px; }
+@media (hover: hover) {
+  .spread__art img { transition: transform 1.8s var(--ease-out); }
+  .spread:hover .spread__art img { transform: scale(1.02); }
+}
+
+/* ==========================================================
+   Пауза: Петропавловка зимой и одна строка
+   ========================================================== */
+.pp-pause { position: relative; isolation: isolate; display: grid; place-items: center; margin-top: var(--sec); overflow: hidden; }
+.pp-pause__img {
+  position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%;
+  filter: var(--photo) brightness(.6);
+}
+.pp-pause__line {
+  margin: 0; padding: clamp(160px, 22vw, 320px) var(--gutter); text-align: center;
+  font-family: var(--serif); font-weight: 500; color: var(--ink);
+  font-size: clamp(40px, 6vw, 104px); line-height: 1; letter-spacing: -.012em;
+}
+
+/* ==========================================================
+   Врачи: зал слева, список справа
+   ========================================================== */
+.pp-docs {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start;
+  gap: 48px clamp(40px, 6vw, 110px); padding-top: var(--sec);
+}
+.pp-docs__photo { aspect-ratio: 5 / 6; /* снизу в кадре туристы — срезаем */ margin-left: calc(-1 * max(var(--gutter), (100vw - var(--wrap)) / 2 + var(--gutter))); }
+.pp-docs__body .pp-text { margin: 28px 0 clamp(40px, 5vw, 64px); }
+.credits { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.credits li {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline;
+  gap: 4px 24px; padding: clamp(18px, 2vw, 26px) 0; border-bottom: 1px solid var(--line);
+}
+.credits h3 { margin: 0; font-family: var(--serif); font-weight: 500; font-size: clamp(30px, 3vw, 46px); line-height: 1; }
+.credits p { margin: 0; grid-column: 1; font-size: 15px; color: var(--ink-soft); }
+.credits .credits__exp { grid-column: 2; grid-row: 1; font-size: 14px; color: var(--muted); white-space: nowrap; }
+
+/* ==========================================================
+   До и после
+   ========================================================== */
+.pp-results { padding-top: var(--sec); }
+.pp-split {
+  display: flex; justify-content: space-between; align-items: baseline; margin: 0;
+  font-family: var(--serif); font-weight: 500;
+  font-size: clamp(88px, 15vw, 240px); line-height: .9; letter-spacing: -.02em;
+}
+.pp-results__note { margin: 20px 0 clamp(40px, 5vw, 72px); font-size: 16px; color: var(--ink-soft); }
+.cases { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2vw, 28px); }
+.case__pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); }
+.case__frame { aspect-ratio: 3 / 4; padding: 12px 14px; background: var(--surface); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.case__name { margin: 16px 0 0; font-family: var(--serif); font-weight: 500; font-size: 26px; line-height: 1.1; }
+
+/* ==========================================================
+   Цены
+   ========================================================== */
+.pp-prices { margin-top: var(--sec); padding-block: var(--sec); }
+.pp-prices__grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); align-items: start; gap: 40px clamp(32px, 5vw, 80px); }
+.pp-prices__head .pp-text { margin: 24px 0 36px; }
+.price-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid currentColor; }
+.price-list li {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 24px;
+  padding: 20px 0; border-bottom: 1px solid var(--line); font-size: 18px;
+}
+.price-list b { font-family: var(--serif); font-weight: 600; font-variant-numeric: lining-nums; font-size: clamp(24px, 2.2vw, 32px); white-space: nowrap; }
+
+/* ==========================================================
+   Контакты: Александровская колонна и под ней адрес с картой
+   ========================================================== */
+.pp-contacts__hero { position: relative; isolation: isolate; display: flex; align-items: flex-end; min-height: clamp(320px, 42vw, 640px); }
+.pp-contacts__hero img {
+  position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; object-position: 30% 40%;
+  filter: var(--photo) brightness(.6);
+}
+.pp-contacts__hero::after {
+  content: ""; position: absolute; inset: 50% 0 0; z-index: -1;
+  background: linear-gradient(0deg, var(--bg), rgba(11, 11, 10, 0));
+}
+.pp-contacts__hero .pp-h { width: 100%; padding-bottom: clamp(24px, 3vw, 48px); color: var(--ink); }
+.pp-contacts__grid {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 40px clamp(32px, 5vw, 80px); margin-top: clamp(32px, 4vw, 56px);
+}
+.pp-contacts__tel {
+  display: inline-block; margin-bottom: 32px;
+  font-family: var(--serif); font-weight: 500; font-variant-numeric: lining-nums;
+  font-size: clamp(38px, 4.2vw, 64px); line-height: 1; transition: opacity .35s;
+}
+.pp-contacts__tel:hover { opacity: .7; }
+.pp-dl { margin: 0; border-top: 1px solid var(--line); }
+.pp-dl > div { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.pp-dl dt { padding-top: 3px; font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
+.pp-dl dd { margin: 0; font-size: 17px; }
+.pp-dl dd small { display: block; margin-top: 2px; font-size: 14px; color: var(--ink-soft); }
+.pp-dl a { background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; }
+.pp-contacts .map { min-height: 440px; }
+
+/* Карта — в негатив */
+.map { background: var(--surface); }
+.map .leaflet-tile-pane { filter: grayscale(1) invert(1) contrast(1.15) brightness(.9); }
+.map .leaflet-control-zoom a { background: var(--bg); color: var(--ink); border-color: var(--line); }
+.map .leaflet-control-attribution { background: rgba(0, 0, 0, .7); }
+.map__pin span { background: var(--ink); border-radius: 0; box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--ink); }
+
+/* ==========================================================
+   Подвал
+   ========================================================== */
+.pp-footer { max-width: var(--wrap); margin: var(--sec) auto 0; padding: 0 var(--gutter) 32px; }
+.pp-footer__warn {
+  margin: 0; padding: clamp(36px, 4.4vw, 64px) 0; border-top: 1px solid var(--line);
+  font-family: var(--serif); font-weight: 500; font-size: clamp(30px, 4.4vw, 68px); line-height: 1; color: rgba(235, 232, 225, .55);
+}
+.pp-footer__credits { margin: 0; max-width: 110ch; font-size: 12px; line-height: 1.7; color: var(--muted); }
+.pp-footer__credits a { text-decoration: underline; text-underline-offset: 2px; }
+.pp-footer__copy { margin: 20px 0 0; font-size: 12px; color: var(--muted); }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* ==========================================================
+   Адаптив
+   ========================================================== */
+@media (max-width: 900px) {
+  .pp-head, .pp-about, .spread, .spread--flip, .pp-docs, .pp-prices__grid, .pp-contacts__grid { grid-template-columns: 1fr; }
+  .pp-head { align-items: start; }
+  .pp-about__photo { margin-left: 20%; }
+  .spread--flip .spread__art { order: 0; }
+  .spread--flip .spread__img img { aspect-ratio: 4 / 5; }
+  .spread__art figcaption { position: static; }
+  .pp-docs__photo { margin-right: 25%; aspect-ratio: 1 / 1; }
+
+  .pp-frieze__img { height: 72vw; min-height: 300px; }
+  .pp-frieze::after { display: none; }
+  /* Цифры уходят под снимок: на узком экране две колонки по две */
+  .pp-frieze__nums { position: static; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 20px; margin-top: 32px; }
+
+  .cases { grid-template-columns: 1fr; gap: 40px; }
+  .case__pair { max-width: 520px; }
+}
+@media (max-width: 640px) {
+  .cap__title { font-size: clamp(32px, 9.4vw, 42px); line-height: 1.02; }
+  .pp-h { font-size: clamp(48px, 14vw, 68px); }
+  .pp-statement { font-size: clamp(34px, 9.6vw, 44px); }
+  .pp-text { font-size: 16px; }
+  .spread__name { font-size: clamp(38px, 11vw, 52px); margin-bottom: 18px; }
+  .pp-frieze__nums dt { font-size: clamp(52px, 15vw, 72px); }
+  .pp-pause__line { padding-block: 34vw; }
+
+  /* Пары «до/после» — лентой, листается пальцем */
+  .cases {
+    grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 84%; gap: 12px;
+    margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter);
+    overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+  }
+  .cases::-webkit-scrollbar { display: none; }
+  .case { scroll-snap-align: start; }
+
+  .price-list li { font-size: 16px; }
+  .pp-dl > div { grid-template-columns: 1fr; gap: 4px; }
+  .pp-contacts .map { min-height: 320px; }
+}

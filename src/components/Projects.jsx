@@ -1,21 +1,31 @@
 import { useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
-import ProjectGallery, { FLOWER_SURGUT_GALLERY } from './ProjectGallery.jsx'
+import ProjectGallery, { FLOWER_SURGUT_GALLERY, CLINIC_GALLERY } from './ProjectGallery.jsx'
 
 const PROJECTS = [
+  {
+    tag: 'Концепт первого экрана',
+    stack: 'HTML / CSS / JAVASCRIPT',
+    title: 'Клиника пластической хирургии',
+    desc: '«Пролёт камеры» по мраморным статуям вместо обычного слайдера: подписи и выбор направления меняются вслед за кадром. Без библиотек.',
+    size: 'large',
+    gallery: CLINIC_GALLERY,
+    demo: 'demo/clinic/index.html',
+    thumbnail: 'projects/clinic/cover.jpg',
+  },
   {
     tag: 'Веб-разработка',
     stack: 'REACT / VITE / SQLITE',
     title: 'Flower Surgut',
     desc: 'Каталог и заказ цветов с каталогом на 60+ позиций и собственной админ-панелью для управления товарами.',
     size: 'large',
-    hasGallery: true,
+    gallery: FLOWER_SURGUT_GALLERY,
     thumbnail: 'projects/flower-surgut/main.jpg',
   },
 ]
 
 export default function Projects() {
-  const [galleryOpen, setGalleryOpen] = useState(false)
+  const [openProject, setOpenProject] = useState(null)
 
   return (
     <section className="projects" id="work">
@@ -27,17 +37,17 @@ export default function Projects() {
         <div className="projects-grid">
           {PROJECTS.map((p) => (
             <article
-              className={`project-card size-${p.size} ${p.hasGallery ? 'project-card--live' : ''}`}
+              className={`project-card size-${p.size} ${p.gallery ? 'project-card--live' : ''}`}
               key={p.title}
-              role={p.hasGallery ? 'button' : undefined}
-              tabIndex={p.hasGallery ? 0 : undefined}
-              onClick={p.hasGallery ? () => setGalleryOpen(true) : undefined}
+              role={p.gallery ? 'button' : undefined}
+              tabIndex={p.gallery ? 0 : undefined}
+              onClick={p.gallery ? () => setOpenProject(p) : undefined}
               onKeyDown={
-                p.hasGallery
+                p.gallery
                   ? (e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault()
-                        setGalleryOpen(true)
+                        setOpenProject(p)
                       }
                     }
                   : undefined
@@ -60,6 +70,18 @@ export default function Projects() {
                   <span className="mono-tag">{p.tag}</span>
                   <span className="mono-tag">{p.stack}</span>
                 </div>
+                {p.demo && (
+                  <a
+                    className="mono-tag project-demo"
+                    href={p.demo}
+                    target="_blank"
+                    rel="noopener"
+                    onClick={(e) => e.stopPropagation()}
+                    onKeyDown={(e) => e.stopPropagation()}
+                  >
+                    Открыть живое демо ↗
+                  </a>
+                )}
               </div>
             </article>
           ))}
@@ -67,10 +89,10 @@ export default function Projects() {
       </div>
 
       <ProjectGallery
-        title="Flower Surgut"
-        images={FLOWER_SURGUT_GALLERY}
-        isOpen={galleryOpen}
-        onClose={() => setGalleryOpen(false)}
+        title={openProject?.title ?? ''}
+        images={openProject?.gallery ?? []}
+        isOpen={openProject !== null}
+        onClose={() => setOpenProject(null)}
       />
 
       <style>{`
@@ -88,6 +110,16 @@ export default function Projects() {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 20px;
+        }
+        /* два проекта — две равные колонки (на телефоне остаётся одна, см. @media ниже) */
+        @media (min-width: 861px) {
+          .projects-grid:has(.project-card:nth-child(2):last-child) {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          .projects-grid:has(.project-card:nth-child(2):last-child) .project-card {
+            grid-column: span 1;
+            grid-row: auto;
+          }
         }
         .projects-grid:has(.project-card:only-child) {
           grid-template-columns: 1fr;
@@ -177,6 +209,14 @@ export default function Projects() {
           line-height: 1.55;
           max-width: 50ch;
         }
+        .project-demo {
+          align-self: flex-start;
+          color: var(--ink);
+          border-bottom: 1.5px solid var(--acid);
+          padding-bottom: 2px;
+          transition: color 0.2s ease;
+        }
+        .project-demo:hover { color: var(--acid); }
         .project-meta {
           display: flex;
           gap: 16px;
