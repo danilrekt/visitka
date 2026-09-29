@@ -1,13 +1,8 @@
 import { useLayoutEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
 import HeroVisual from './HeroVisual.jsx'
-
-const ease = [0.16, 1, 0.3, 1]
 
 export default function Hero() {
   const [catActive, setCatActive] = useState(false)
-  // the hint first shows up once the cat has assembled; after that it reacts instantly
-  const [hintIntroDone, setHintIntroDone] = useState(false)
   const [visualHeight, setVisualHeight] = useState(null)
   const textRef = useRef(null)
   const subRef = useRef(null)
@@ -43,87 +38,48 @@ export default function Hero() {
       <div className="wrap hero-inner">
         <div className="hero-text" ref={textRef}>
           <h1 className="hero-title">
-            <motion.span
-              className="hl-row"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease, delay: 0.05 }}
-            >
+            <span className="hl-row hero-rise" style={{ '--d': '0s' }}>
               ИНТЕРФЕЙСЫ,
-            </motion.span>
-            <motion.span
-              className="hl-row"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease, delay: 0.15 }}
-            >
+            </span>
+            <span className="hl-row hero-rise" style={{ '--d': '0.06s' }}>
               КОТОРЫЕ
-            </motion.span>
-            <motion.span
-              className="hl-row"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease, delay: 0.25 }}
-            >
+            </span>
+            <span className="hl-row hero-rise" style={{ '--d': '0.12s' }}>
               ХОЧЕТСЯ
-            </motion.span>
-            <motion.span
-              className="hl-row"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease, delay: 0.35 }}
-            >
+            </span>
+            <span className="hl-row hero-rise" style={{ '--d': '0.18s' }}>
               <span className="acid">ПОТРОГАТЬ</span>.
-            </motion.span>
+            </span>
           </h1>
 
-          <motion.p
-            ref={subRef}
-            className="hero-sub"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-          >
+          <p ref={subRef} className="hero-sub hero-fade">
             Данил — fullstack-разработчик. Сайты и сервисы на React и Node.
-          </motion.p>
+          </p>
 
-          <motion.div
-            className="hero-actions"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease, delay: 0.6 }}
-          >
+          <div className="hero-actions hero-rise-sm">
             <a href="#work" className="hero-btn" onClick={(e) => goTo(e, '#work')}>
               Смотреть работы <span aria-hidden="true">↓</span>
             </a>
             <a href="#contact" className="hero-link" onClick={(e) => goTo(e, '#contact')}>
               Написать
             </a>
-          </motion.div>
+          </div>
         </div>
 
         <div className="hero-visual" style={visualHeight ? { height: visualHeight } : undefined}>
           <HeroVisual onActiveChange={setCatActive} />
-          <motion.div
-            className="hero-poke"
-            aria-hidden="true"
-            initial={{ opacity: 0, y: -6 }}
-            animate={catActive ? { opacity: 0, y: 0 } : { opacity: 1, y: 0 }}
-            transition={
-              !hintIntroDone
-                ? { duration: 0.4, ease, delay: 1.2 }
-                : { duration: catActive ? 0 : 0.12 }
-            }
-            onAnimationComplete={() => setHintIntroDone(true)}
-          >
-            <span className="hero-poke-text">потрогать котика</span>
-            <svg className="hero-poke-arrow" viewBox="0 0 48 60" fill="none">
-              <g strokeLinecap="round" strokeLinejoin="round">
-                <path d="M14 4 C 40 12, 6 30, 26 52 M17 45 L 26 52 L 31 42" stroke="var(--ink)" strokeWidth="5" />
-                <path d="M14 4 C 40 12, 6 30, 26 52 M17 45 L 26 52 L 31 42" stroke="var(--acid)" strokeWidth="2.6" />
-              </g>
-            </svg>
-          </motion.div>
+          <div className="hero-poke" aria-hidden="true">
+            {/* снаружи — появление после сборки кота, внутри — прячется, пока кота трогают */}
+            <div className={`hero-poke-inner ${catActive ? 'is-hidden' : ''}`}>
+              <span className="hero-poke-text">потрогать котика</span>
+              <svg className="hero-poke-arrow" viewBox="0 0 48 60" fill="none">
+                <g strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 4 C 40 12, 6 30, 26 52 M17 45 L 26 52 L 31 42" stroke="var(--ink)" strokeWidth="5" />
+                  <path d="M14 4 C 40 12, 6 30, 26 52 M17 45 L 26 52 L 31 42" stroke="var(--acid)" strokeWidth="2.6" />
+                </g>
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -151,6 +107,12 @@ export default function Hero() {
           font-size: clamp(40px, 6.4vw, 92px);
         }
         .hl-row { display: block; }
+        /* появление первого экрана (раньше framer-motion — CSS хватает, а бандл легче на ~35 КБ gzip) */
+        @keyframes hero-rise { from { opacity: 0; transform: translateY(var(--rise, 40px)); } }
+        @keyframes hero-fade { from { opacity: 0; } }
+        .hero-rise { animation: hero-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) both; }
+        .hero-rise-sm { --rise: 8px; animation: hero-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both; }
+        .hero-fade { animation: hero-fade 0.5s ease 0.3s both; }
         .hero-sub {
           margin-top: 28px;
           max-width: 46ch;
@@ -214,6 +176,14 @@ export default function Hero() {
           pointer-events: none;
         }
         /* салатовая плашка — тот же акцент, что у «РАБОТАЮТ» в заголовке */
+        .hero-poke { --rise: -6px; animation: hero-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both; }
+        .hero-poke-inner {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          transition: opacity 0.12s ease;
+        }
+        .hero-poke-inner.is-hidden { opacity: 0; transition-duration: 0s; }
         .hero-poke-text {
           font-family: var(--font-display);
           font-weight: 700;
