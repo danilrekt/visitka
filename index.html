@@ -6,6 +6,8 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Данил — Fullstack Developer</title>
     <meta name="description" content="Данил — fullstack-разработчик. Сайты и сервисы на React и Node." />
+    <!-- котик грузится из JS (HeroVisual) — без preload запрос уходит только после бандла -->
+    <link rel="preload" as="image" href="hero-cat.jpg" fetchpriority="high">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Onest:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
