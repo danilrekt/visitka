@@ -110,9 +110,10 @@ export default function Header() {
           gap: 36px;
         }
         .nav-link {
-          font-size: 13px;
-          font-weight: 600;
-          letter-spacing: 0.04em;
+          font-family: var(--font-display);
+          font-size: 14px;
+          font-weight: 700;
+          letter-spacing: 0.02em;
           text-transform: uppercase;
           position: relative;
           padding-bottom: 3px;
@@ -165,7 +166,8 @@ export default function Header() {
         .mobile-menu {
           position: fixed;
           inset: 0;
-          z-index: 55;
+          /* под шапкой (z-index 50): иначе меню закрывает бургер и его нечем закрыть */
+          z-index: 45;
           background: var(--paper);
           display: flex;
           flex-direction: column;

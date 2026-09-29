@@ -1,5 +1,5 @@
 const ROW_1 = ['JAVASCRIPT', 'REACT', 'VITE', 'HTML', 'CSS']
-const ROW_2 = ['NODE.JS', 'EXPRESS', 'REST API', 'SQL', 'SQLITE']
+const ROW_2 = ['NODE.JS', 'EXPRESS', 'REST API', 'SQLITE']
 const ROW_3 = ['GIT', 'GITHUB', 'DOCKER', 'VS CODE']
 
 function MarqueeRow({ items, reverse, accent }) {
@@ -23,7 +23,7 @@ export default function Stack() {
     <section className="stack" id="stack">
       <div className="wrap stack-head">
         <h2 className="section-title">Стек</h2>
-        <span className="mono-tag">инструменты, с которыми работаю каждый день</span>
+        <span className="mono-tag">инструменты, с которыми работаю</span>
       </div>
 
       <div className="marquee-wrap">

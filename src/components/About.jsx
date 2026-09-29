@@ -1,4 +1,3 @@
-import Stats from './Stats.jsx'
 import Services from './Services.jsx'
 
 export default function About() {
@@ -10,20 +9,16 @@ export default function About() {
             <span className="mono-tag about-label">Обо мне</span>
 
             <h2 className="about-statement">
-              Я не просто пишу <span className="nowrap">код —</span>
+              А то, что нельзя потрогать,
               <br />
-              я довожу продукт <span className="acid">до конца</span>.
+              <span className="acid">тоже делаю я</span>.
             </h2>
 
             <p className="about-text">
-              Беру задачу от макета или идеи и веду её через весь путь:
-              интерфейс на React, API на Node, данные в Supabase, деплой.
-              Мне важно, чтобы каждый экран открывался быстро и работал
-              без сюрпризов.
+              Сервер, база данных и деплой. Их не видно — зато сразу
+              заметно, когда они сделаны плохо.
             </p>
           </div>
-
-          <Stats />
         </div>
 
         <div className="about-services">
@@ -35,13 +30,6 @@ export default function About() {
         .about {
           padding: clamp(22px, 3.4vw, 47px) 0;
           border-top: 1px solid var(--line-soft);
-        }
-        /* heading + text on the left, numbers beside them, one shared left edge */
-        .about-top {
-          display: grid;
-          grid-template-columns: 1.4fr 1fr;
-          gap: clamp(32px, 5vw, 80px);
-          align-items: end;
         }
         .about-label {
           display: block;
@@ -67,7 +55,6 @@ export default function About() {
           margin-top: clamp(32px, 5vw, 64px);
         }
         @media (max-width: 900px) {
-          .about-top { grid-template-columns: 1fr; gap: 28px; }
         }
       `}</style>
     </section>

@@ -32,19 +32,16 @@ export default function Hero() {
     }
   }, [])
 
+  // прокрутка к разделу без #якоря в адресе — как в меню шапки
+  const goTo = (e, href) => {
+    e.preventDefault()
+    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
     <section className="hero" id="top">
       <div className="wrap hero-inner">
         <div className="hero-text" ref={textRef}>
-          <motion.p
-            className="mono-tag hero-kicker"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease }}
-          >
-            Frontend / Fullstack
-          </motion.p>
-
           <h1 className="hero-title">
             <motion.span
               className="hl-row"
@@ -52,7 +49,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease, delay: 0.05 }}
             >
-              СОБИРАЮ
+              ИНТЕРФЕЙСЫ,
             </motion.span>
             <motion.span
               className="hl-row"
@@ -60,7 +57,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease, delay: 0.15 }}
             >
-              ИНТЕРФЕЙСЫ,
+              КОТОРЫЕ
             </motion.span>
             <motion.span
               className="hl-row"
@@ -68,7 +65,15 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease, delay: 0.25 }}
             >
-              КОТОРЫЕ <span className="acid">РАБОТАЮТ</span>.
+              ХОЧЕТСЯ
+            </motion.span>
+            <motion.span
+              className="hl-row"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease, delay: 0.35 }}
+            >
+              <span className="acid">ПОТРОГАТЬ</span>.
             </motion.span>
           </h1>
 
@@ -79,28 +84,21 @@ export default function Hero() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
-            Данил — разработчик. React и Node от идеи до продакшена:
-            интерфейс, API, база данных, деплой.
+            Данил — fullstack-разработчик. Сайты и сервисы на React и Node.
           </motion.p>
 
           <motion.div
-            className="hero-meta"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
+            className="hero-actions"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease, delay: 0.6 }}
           >
-            <div className="hero-meta-item">
-              <span className="mono-tag">Frontend</span>
-              <p>React · Vite · JS</p>
-            </div>
-            <div className="hero-meta-item">
-              <span className="mono-tag">Backend</span>
-              <p>Node · Express · REST</p>
-            </div>
-            <div className="hero-meta-item">
-              <span className="mono-tag">Данные</span>
-              <p>Supabase · SQL</p>
-            </div>
+            <a href="#work" className="hero-btn" onClick={(e) => goTo(e, '#work')}>
+              Смотреть работы <span aria-hidden="true">↓</span>
+            </a>
+            <a href="#contact" className="hero-link" onClick={(e) => goTo(e, '#contact')}>
+              Написать
+            </a>
           </motion.div>
         </div>
 
@@ -148,7 +146,7 @@ export default function Hero() {
           font-family: var(--font-display);
           font-weight: 800;
           text-transform: uppercase;
-          line-height: 0.92;
+          line-height: 0.98;
           letter-spacing: -0.015em;
           font-size: clamp(40px, 6.4vw, 92px);
         }
@@ -160,27 +158,54 @@ export default function Hero() {
           line-height: 1.55;
           color: var(--grey);
         }
-        .hero-meta {
+        .hero-actions {
           display: flex;
-          gap: 36px;
-          margin-top: 44px;
-          padding-top: 24px;
-          border-top: 1px solid var(--line-soft);
+          align-items: center;
           flex-wrap: wrap;
+          gap: 18px 30px;
+          margin-top: 36px;
         }
-        .hero-meta-item p {
-          margin-top: 6px;
-          font-size: 13px;
-          font-weight: 500;
+        .hero-btn,
+        .hero-link {
+          font-family: var(--font-display);
+          font-weight: 700;
+          font-size: 15px;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
         }
+        .hero-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          padding: 16px 26px;
+          background: var(--ink);
+          color: var(--paper);
+          transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .hero-btn:hover,
+        .hero-btn:focus-visible { background: var(--acid); color: var(--ink); }
+        .hero-link {
+          padding: 3px 4px;
+          margin-left: -4px;
+          border-bottom: 2px solid var(--acid);
+          transition: background-color 0.2s ease;
+        }
+        /* как «Открыть живое демо»: салатовый только заливкой под чёрным текстом */
+        .hero-link:hover,
+        .hero-link:focus-visible { background: var(--acid); }
         .hero-visual {
           position: relative;
           height: clamp(320px, 44vw, 560px);
         }
+        /* кот чуть правее (вместе с подсказкой); на телефоне стоит по центру — не двигаем */
+        @media (min-width: 901px) {
+          .hero-visual { translate: 20px 0; }
+        }
         /* sits in the gap between the cat's ears, arrow pointing at its head */
         .hero-poke {
           position: absolute;
-          top: 3%;
+          /* от верха нарисованного кота (HeroVisual ставит --cat-top/--cat-h), а не от рамки */
+          top: calc(var(--cat-top, 0px) + var(--cat-h, 100%) * 0.03);
           left: 50%;
           translate: -50% 0;
           display: flex;
@@ -188,17 +213,25 @@ export default function Hero() {
           align-items: center;
           pointer-events: none;
         }
+        /* салатовая плашка — тот же акцент, что у «РАБОТАЮТ» в заголовке */
         .hero-poke-text {
-          font-family: 'Caveat', cursive;
+          font-family: var(--font-display);
           font-weight: 700;
-          font-size: clamp(20px, 2vw, 28px);
+          font-size: clamp(14px, 1.2vw, 17px);
           line-height: 1;
+          color: var(--ink);
+          background: var(--acid);
+          padding: 6px 10px;
           white-space: nowrap;
           transform: rotate(-4deg);
         }
         .hero-poke-arrow {
           width: clamp(32px, 3.6vw, 52px);
           margin-top: 2px;
+        }
+        /* на десктопе подпись выше — ближе к кончикам ушей */
+        @media (min-width: 901px) {
+          .hero-poke { top: calc(var(--cat-top, 0px) + var(--cat-h, 100%) * 0.03 - 14px); }
         }
         .hero-visual-canvas {
           width: 100%;
@@ -210,19 +243,7 @@ export default function Hero() {
             grid-template-columns: 1fr;
           }
           .hero-visual { order: -1; height: 340px; }
-          .hero-meta {
-            display: grid;
-            gap: 10px;
-            margin-top: 28px;
-            padding-top: 18px;
-          }
-          .hero-meta-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 16px;
-          }
-          .hero-meta-item p { margin-top: 0; text-align: right; }
+          .hero-actions { margin-top: 28px; gap: 16px 24px; }
         }
       `}</style>
     </section>

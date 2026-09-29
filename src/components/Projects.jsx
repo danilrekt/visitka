@@ -17,7 +17,7 @@ const PROJECTS = [
     tag: 'Веб-разработка',
     stack: 'REACT / VITE / SQLITE',
     title: 'Flower Surgut',
-    desc: 'Каталог и заказ цветов с каталогом на 60+ позиций и собственной админ-панелью для управления товарами.',
+    desc: 'Интернет-магазин цветов: каталог на 60+ букетов, онлайн-заказ и своя админ-панель для управления товарами.',
     size: 'large',
     gallery: FLOWER_SURGUT_GALLERY,
     thumbnail: 'projects/flower-surgut/main.jpg',
@@ -31,7 +31,7 @@ export default function Projects() {
     <section className="projects" id="work">
       <div className="wrap">
         <div className="projects-head">
-          <h2 className="section-title">Избранные проекты</h2>
+          <h2 className="section-title">Работы</h2>
         </div>
 
         <div className="projects-grid">
@@ -213,10 +213,13 @@ export default function Projects() {
           align-self: flex-start;
           color: var(--ink);
           border-bottom: 1.5px solid var(--acid);
-          padding-bottom: 2px;
-          transition: color 0.2s ease;
+          padding: 2px 4px;
+          margin-left: -4px;
+          transition: background-color 0.2s ease;
         }
-        .project-demo:hover { color: var(--acid); }
+        /* салатовый — только заливкой под чёрным текстом, как на остальном сайте: салатовый текст на светлом не читается */
+        .project-demo:hover,
+        .project-demo:focus-visible { background: var(--acid); color: var(--ink); }
         .project-meta {
           display: flex;
           gap: 16px;

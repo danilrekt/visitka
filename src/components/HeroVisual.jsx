@@ -71,6 +71,10 @@ export default function HeroVisual({ onActiveChange }) {
       const threshold = small ? DARK_THRESHOLD_SMALL : DARK_THRESHOLD
       dot = small ? DOT_SMALL : DOT_LARGE
       const oy = h - dh // sit on the bottom edge, the chin lines up with the text
+      // где на самом деле нарисован кот — по этим значениям подсказка «потрогать котика»
+      // встаёт между ушами при любой ширине, а не висит над котом, когда он меньше рамки
+      canvas.parentElement?.style.setProperty('--cat-top', `${oy}px`)
+      canvas.parentElement?.style.setProperty('--cat-h', `${dh}px`)
 
       const off = document.createElement('canvas')
       off.width = Math.ceil(dw)
@@ -257,6 +261,10 @@ export default function HeroVisual({ onActiveChange }) {
     img.src = SRC
 
     return () => {
+      // В dev StrictMode эффект запускается дважды: без этого первый экземпляр после загрузки
+      // картинки тоже начинает рисовать на том же холсте, со старыми размерами
+      img.onload = null
+      n = 0
       cancelAnimationFrame(raf)
       clearTimeout(releaseTimer)
       ro.disconnect()

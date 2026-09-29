@@ -10,17 +10,17 @@ const SERVICES = [
   {
     n: '02',
     title: 'Веб-продукты',
-    desc: 'Полный цикл: фронтенд, бэкенд, база данных, деплой.',
+    desc: 'Сайт или сервис под ключ: от идеи до работающего продукта.',
   },
   {
     n: '03',
     title: 'API и бэкенд',
-    desc: 'Node/Express, REST API, интеграции, Supabase.',
+    desc: 'Node.js и Express, REST, интеграции со сторонними сервисами, SQLite.',
   },
   {
     n: '04',
     title: 'Поддержка и рефакторинг',
-    desc: 'Разбор существующего проекта, ускорение, чистка кода.',
+    desc: 'Разберусь в чужом проекте, ускорю и приведу код в порядок.',
   },
 ]
 
@@ -32,7 +32,6 @@ export default function Services() {
     <div className="services" id="services">
       <div className="services-head">
         <h2 className="section-title">С чем помогаю</h2>
-        <span className="mono-tag">04 направления</span>
       </div>
 
       <div className="services-list">
